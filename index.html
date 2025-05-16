@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Um universo repleto de magia, onde você encontrará o seu lar">
+    <link href="https://fonts.cdnfonts.com/css/harry-potter" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <title>Harry Potter</title>
+</head>
+
+<body>
+
+    <audio id="bg-music" loop>
+        <source src="./audio/Harry_Potter_Theme_Song_Hedwigs_Theme.mp3" type="audio/mp3">
+    </audio>
+
+    <header>
+        <nav class="navbar">
+            <!-- Logo do Harry Potter -->
+            <div class="nav-left">
+
+                <a href="index.html" class="logo">
+                    <img src='./imgs/logo.png' alt="Logo do Harry Potter">
+                </a>
+            </div>
+
+            <!-- Botão de Login -->
+            <div class="nav-right">
+
+                <!-- Logo do Wizarding World -->
+                <!-- href="curiosidades.html" -->
+                <a class="wand-logo">
+                    <img src='./imgs/Wizarding_World_logo_contraste.png' alt="Curiosidades">
+
+                </a>
+
+                <a href="login.html" class="nav-button-login">
+                    Login
+                </a>
+                <!-- Botão de Cadastro -->
+
+
+                <a href="cadastro.html" class="nav-button-cadastro">
+                    Cadastro
+                </a>
+            </div>
+        </nav>
+    </header>
+
+
+    <div class="container">
+
+        <div class="container1">
+            <div id="clouds"></div>
+
+            <h1 id="welcome-text">Seja Bem-Vindo ao universo de muita magia</h1>
+
+        </div>
+    </div>
+
+    <main>
+
+        <div class="quiz-inicial" id="quiz">
+
+            <div class="quiz-content">
+                <h2>Descubra a sua casa do castelobruxo?</h2>
+
+                <a class="quiz-inicial-button" href="quiz.html">
+                    Iniciar o Quiz
+                </a>
+            </div>
+        </div>
+
+        <div class="homepage">
+            <img src="./imgs/profeta_diario.png">
+
+            <div class="homepage-h2">
+
+                <h2>EXPLORE A MAGIA ALÉM DE HOGWARTS<br><br>
+                    ENCONTRE O SEU LUGAR NO UNIVERSO BRUXO
+                </h2>
+
+                <!-- href="curiosidades.html" -->
+                <a class="homepage-button">
+                    Saiba mais
+                </a>
+
+            </div>
+        </div>
+
+    </main>
+
+    <footer>
+        <p>© 2025 - Todos os feitiços reservados por Gabriel Gomes Pimentel</p>
+    </footer>
+
+    <script>
+
+        // Função para habilitar e desabilitar a opção de áudio 
+        document.addEventListener('DOMContentLoaded', function () {
+            const audio = document.getElementById('bg-music');
+            const texto = document.getElementById('welcome-text');
+
+            texto.addEventListener('click', () => {
+                if (audio.paused) {
+                    audio.play()
+                } else {
+                    audio.pause();
+                }
+
+                // Função para descer a tela
+                document.getElementById('quiz').scrollIntoView({ behavior: 'smooth' });
+
+            });
+
+            // ANIMAÇÃO DAS NUVENS
+
+            const cloudImages = [
+                './imgs/cloud1.png',
+                './imgs/cloud2.png',
+                './imgs/cloud3.png',
+                './imgs/cloud4.png',
+                './imgs/cloud5.png'];
+
+            const cloudsContainer = document.getElementById('clouds');
+
+            const numberClouds = 30;
+
+            for (let i = 0; i < numberClouds; i++) {
+                const cloud = document.createElement('img');
+                cloud.classList.add('cloud');
+
+                const ramdomImage = cloudImages[Math.floor(Math.random() * cloudImages.length)];
+
+                const duration = Math.random() * 20 + 10; // 10-30s
+
+                const scale = Math.random() * 0.5 + 0.5; //0.5-1
+
+                cloud.src = ramdomImage;
+
+                cloud.style.top = `${Math.random() * 100}%`
+
+                cloud.style.animationDuration = `${duration}s`;
+
+                cloud.style.transform = `scale(${scale})`
+
+                cloudsContainer.appendChild(cloud);
+
+            }
+
+        });
+
+
+    </script>
+
+
+</body>
+
+</html>
