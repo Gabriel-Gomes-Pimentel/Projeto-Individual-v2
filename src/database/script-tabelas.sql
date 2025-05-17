@@ -38,6 +38,8 @@ CREATE TABLE area_magica (
 CREATE TABLE usuarios (
     id INT PRIMARY KEY AUTO_INCREMENT,
     nome VARCHAR(45) NOT NULL,
+	email VARCHAR(45) NOT NULL UNIQUE,
+    senha VARCHAR(45) NOT NULL,
     fk_selecao_casa INT,
     fk_area_magica INT,
     autenticado TINYINT(1) DEFAULT 0,

@@ -1,33 +1,29 @@
 function validarNome() {
-
     var nome = input_nome.value;
-
-
     if (input_nome.value.length > 0) {
         input_nome.style.border = "1px solid #fff";
+        nomeValido = true;
     } else {
         input_nome.style.border = "1px solid red";
+        nomeValido = false;
     }
 }
-
 function validarEmail() {
-
     var email = input_email.value;
-
-
     if (email.length > 0) {
-        if (email.includes('@' && '.')) {
+        if (email.includes('@') && email.includes('.')) {
             input_email.style.border = '1px solid #fff';
+            emailValido = true;
         } else {
             input_email.style.border = '1px solid red';
+            emailValido = false;
         }
     } else {
         input_email.style.border = '1px solid red';
+        emailValido = false;
     }
 }
-
 function validarSenha() {
-
     var senha = input_senha.value;
     input_senha.value = senha.replaceAll("'", '').replaceAll('=', '').replaceAll(';', '').replaceAll('"', '').replaceAll('#', '');
 
@@ -110,6 +106,7 @@ function validarSenha() {
     } else {
         span_especial.style.color = 'red';
     }
+
     if (senha.length >= 8) {
         span_tamanho.style.color = '#fff';
     } else {
@@ -123,17 +120,58 @@ function validarSenha() {
             input_senha.style.border = '1px solid red';
         }
     } else {
-        input_senha.style.border = '1px solid black';
+        input_senha.style.border = '1px solid red';
     }
 
+    senhaValida = (
+        senha.length >= 8 &&
+        senhaNumero &&
+        letraMinusculo &&
+        letraMaiuscula &&
+        (senhaArroba || senhaExclamacao || senhaSifrao || senhaPorcetagem || senhaEcomercial || senhaAsteristico || senhaUnderline || senhaPonto)
+    );
 }
 
 function validarCadastro(event) {
     event.preventDefault();
 
-    if (input_senha.style.border == '1px solid #fff' && input_email.style.border == '1px solid #fff' && input_nome.style.border == '1px solid #fff') {
+    if (nomeValido && emailValido && senhaValida) {
+        var nome = input_nome.value;
+        var email = input_email.value;
+        var senha = input_senha.value;
+        var casa = document.getElementById("selecao_casa").value;
+        var areaMagica = document.getElementById("area_magica").value;
 
-        window.location.href = 'login.html';
+        fetch("/usuarios/cadastrar", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                nomeServer: nome,
+                emailServer: email,
+                senhaServer: senha,
+                id_selecao_casaVincularServer: casa,
+                id_area_magicaVincularServer: areaMagica
+            }),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.error) {
+                    alert("Erro ao cadastrar: " + data.error);
+
+                } else {
+                    alert("Cadastro realizado com sucesso!");
+                    window.location.href = 'login.html';
+                }
+            })
+            .catch((error) => {
+                console.error("Erro:", error);
+                alert("Erro no servidor. Tente novamente");
+            });
+
+    } else {
+        alert("Por favor, preencha todos os campos corretamente.");
     }
 }
 
@@ -154,22 +192,26 @@ function alternarVisibilidadeSenha() {
     }
 }
 
-function validarLogin(event) {
-    event.preventDefault();
 
-    //ESTÁTICO EXEMPLO
-    var emailCorreto = "teste@1123.com";
-    var senhaCorreta = "Senha123."
+// function validarLogin(event) {
+//     event.preventDefault();
 
-    if (senha == senhaCorreta && email == emailCorreto) {
-        input_email.style.border = '1px solid #fff';
-        inpu_senha.style.border = '1px solid #fff'
-    } else {
-        alert('Usuario não encontrado')
-        input_senha.style.border = '1px solid red';
-        inpput_email.style.border = '1px solid red';
-    }
-}
+//ESTÁTICO EXEMPLO
+//     var emailCorreto = "teste@1123.com";
+//     var senhaCorreta = "Senha123."
+
+//     if (senha == senhaCorreta && email == emailCorreto) {
+//         input_email.style.border = '1px solid #fff';
+//         inpu_senha.style.border = '1px solid #fff'
+//     } else {
+//         alert('Usuario não encontrado')
+//         input_senha.style.border = '1px solid red';
+//         inpput_email.style.border = '1px solid red';
+//     }
+// }
+
+
+
 
 // const luz = document.querySelector('.luz');
 
