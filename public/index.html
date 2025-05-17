@@ -1,47 +1,34 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Um universo repleto de magia, onde você encontrará o seu lar">
     <link href="https://fonts.cdnfonts.com/css/harry-potter" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../public/css/style.css">
     <title>Harry Potter</title>
 </head>
 
 <body>
-
     <audio id="bg-music" loop>
-        <source src="./audio/Harry_Potter_Theme_Song_Hedwigs_Theme.mp3" type="audio/mp3">
+        <source src="../public/assets/audio/Harry_Potter_Theme_Song_Hedwigs_Theme.mp3" type="audio/mp3">
     </audio>
-
     <header>
         <nav class="navbar">
-            <!-- Logo do Harry Potter -->
             <div class="nav-left">
-
                 <a href="index.html" class="logo">
-                    <img src='./imgs/logo.png' alt="Logo do Harry Potter">
+                    <img src='../public/assets/icon/logo.png' alt="Logo do Harry Potter">
                 </a>
             </div>
-
-            <!-- Botão de Login -->
             <div class="nav-right">
-
-                <!-- Logo do Wizarding World -->
                 <!-- href="curiosidades.html" -->
                 <a class="wand-logo">
-                    <img src='./imgs/Wizarding_World_logo_contraste.png' alt="Curiosidades">
-
+                    <img src="../public/assets/icon/Wizarding_World_logo_contraste.png" alt="Curiosidades">
                 </a>
-
                 <a href="login.html" class="nav-button-login">
                     Login
                 </a>
-                <!-- Botão de Cadastro -->
-
-
                 <a href="cadastro.html" class="nav-button-cadastro">
                     Cadastro
                 </a>
@@ -51,45 +38,33 @@
 
 
     <div class="container">
-
         <div class="container1">
             <div id="clouds"></div>
-
             <h1 id="welcome-text">Seja Bem-Vindo ao universo de muita magia</h1>
-
         </div>
     </div>
 
     <main>
-
         <div class="quiz-inicial" id="quiz">
-
             <div class="quiz-content">
                 <h2>Descubra a sua casa do castelobruxo?</h2>
-
                 <a class="quiz-inicial-button" href="quiz.html">
                     Iniciar o Quiz
                 </a>
             </div>
         </div>
-
         <div class="homepage">
-            <img src="./imgs/profeta_diario.png">
-
+            <img src="../public/assets/imgs/profeta_diario.png">
             <div class="homepage-h2">
-
                 <h2>EXPLORE A MAGIA ALÉM DE HOGWARTS<br><br>
                     ENCONTRE O SEU LUGAR NO UNIVERSO BRUXO
                 </h2>
-
                 <!-- href="curiosidades.html" -->
                 <a class="homepage-button">
                     Saiba mais
                 </a>
-
             </div>
         </div>
-
     </main>
 
     <footer>
@@ -118,11 +93,11 @@
             // ANIMAÇÃO DAS NUVENS
 
             const cloudImages = [
-                './imgs/cloud1.png',
-                './imgs/cloud2.png',
-                './imgs/cloud3.png',
-                './imgs/cloud4.png',
-                './imgs/cloud5.png'];
+                '../public/assets/icon/cloud1.png',
+                '../public/assets/icon/cloud2.png',
+                '../public/assets/icon/cloud3.png',
+                '../public/assets/icon/cloud4.png',
+                '../public/assets/icon/cloud5.png'];
 
             const cloudsContainer = document.getElementById('clouds');
 

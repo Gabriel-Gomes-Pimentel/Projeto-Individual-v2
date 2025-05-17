@@ -10,32 +10,6 @@ function validarNome() {
     }
 }
 
-function validarNascimento() {
-
-    var nascimento = input_nascimento.value.replace(/\//g, '');
-    var formatandoInput = '';
-
-    for (var i = 0; i < nascimento.length; i++) {
-        formatandoInput += nascimento[i];
-
-        if (i == 1 || i == 3) {
-            formatandoInput += "/";
-        }
-    }
-
-    input_nascimento.value = formatandoInput;
-
-    if (nascimento.length > 0) {
-        if (nascimento.length == 8) {
-            input_nascimento.style.border = '1px solid #fff';
-        } else {
-            input_nascimento.style.border = '1px solid red';
-        }
-    } else {
-        input_nascimento.style.border = '1px solid black';
-    }
-}
-
 function validarEmail() {
 
     var email = input_email.value;
@@ -50,7 +24,6 @@ function validarEmail() {
     } else {
         input_email.style.border = '1px solid red';
     }
-
 }
 
 function validarSenha() {
@@ -198,9 +171,9 @@ function validarLogin(event) {
     }
 }
 
-const luz = document.querySelector('.luz');
+// const luz = document.querySelector('.luz');
 
-window.addEventListener('mousemove', (e) => {
-    luz.style.setProperty('--x', `${e.clientX}px`);
-    luz.style.setProperty('--y', `${e.clientY}px`);
-})
+// window.addEventListener('mousemove', (e) => {
+//     luz.style.setProperty('--x', `${e.clientX}px`);
+//     luz.style.setProperty('--y', `${e.clientY}px`);
+// })
