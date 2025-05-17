@@ -1,62 +1,102 @@
--- Arquivo de apoio, caso você queira criar tabelas como as aqui criadas para a API funcionar.
--- Você precisa executar os comandos no banco de dados para criar as tabelas,
--- ter este arquivo aqui não significa que a tabela em seu BD estará como abaixo!
+CREATE DATABASE HarryPotter;
+USE HarryPotter;
 
-/*
-comandos para mysql server
+
+/* ============================== TABELA SELECAO_CASA ==================================================
+-- Finalidade: Armazena as 4 casas da escola de magia Castelobruxo (equivalente a Hogwarts).
+-- Exemplo de uso: Cada usuário será associado a uma dessas casas após fazer o quiz de seleção.
+=========================================================================================================
+*/
+CREATE TABLE selecao_casa (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(45) NOT NULL
+);
+
+-- Inserindo as 4 casas do Castelobruxo
+INSERT INTO selecao_casa (nome) VALUES
+('Tapiréu'), 
+('Itapara'), 
+('Tibouchina'), 
+('Araribóia');
+
+/* ============================== TABELA AREA_MAGICA =====================================================
+-- Finalidade: Armazena diferentes áreas do conhecimento mágico (Poções, Herbologia, Magizologia e Feitiços).
+-- Exemplo de uso: Cada usuário seleciona a área da magia com que mais se identifica.
+=========================================================================================================
+*/
+CREATE TABLE area_magica (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(45) NOT NULL
+);
+
+/* ============================== TABELA USUARIOS ========================================================
+-- Finalidade: Representa os bruxos que jogam e fazem o quiz e interagem com o site.
+-- Cada usuário está relacionado a uma única casa e a uma única área mágica.
+-- autenticado: indica se o usuário está logado (1 = sim, 0 = não).
+=========================================================================================================
+*/
+CREATE TABLE usuarios (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(45) NOT NULL,
+    fk_selecao_casa INT,
+    fk_area_magica INT,
+    autenticado TINYINT(1) DEFAULT 0,
+    CONSTRAINT fkUsuariosSelecaoCasa FOREIGN KEY (fk_selecao_casa)
+        REFERENCES selecao_casa (id),
+    CONSTRAINT fkUsuariosAreaMagica FOREIGN KEY (fk_area_magica)
+        REFERENCES area_magica (id)
+);
+
+/* ============================== TABELA PARTIDA ==========================================================
+-- Finalidade: Registra cada vez que um usuário joga o jogo.
+-- Cada partida guarda a data/hora e a pontuação obtida.
+-- Um usuário pode jogar várias vezes (N:1 com usuarios).
+=========================================================================================================
+*/
+CREATE TABLE partida (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    fk_usuario INT NOT NULL,
+    data_partida DATETIME DEFAULT CURRENT_TIMESTAMP,
+    pontos INT NOT NULL,
+    CONSTRAINT fkPartidaUsuario FOREIGN KEY (fk_usuario)
+        REFERENCES usuarios (id)
+);
+
+/*======================================QUERIES===========================================================
+1- Porcentagem de usuários por casa
+2- Radar: interesses por área mágica de cada casa
+3- Mostrar o ranking das casas, baseado na maior pontuação individual de um jogador de cada casa.
+==========================================================================================================
 */
 
-CREATE DATABASE aquatech;
+-- 1
+SELECT 
+    c.nome AS casa,
+    COUNT(u.id) AS total_usuarios,
+    ROUND(100 * COUNT(u.id) / (SELECT COUNT(*) FROM usuarios), 2) AS porcentagem
+FROM selecao_casa c
+LEFT JOIN usuarios u ON u.fk_selecao_casa = c.id
+GROUP BY c.id;
 
-USE aquatech;
 
-CREATE TABLE empresa (
-	id INT PRIMARY KEY AUTO_INCREMENT,
-	razao_social VARCHAR(50),
-	cnpj CHAR(14),
-	codigo_ativacao VARCHAR(50)
-);
+-- 2
+SELECT 
+    c.nome AS casa,
+    a.nome AS areaMagica,
+    COUNT(u.id) AS total_interesse
+FROM usuarios u
+JOIN selecao_casa c ON u.fk_selecao_casa = c.id
+JOIN area_magica a ON u.fk_area_magica = a.id
+GROUP BY c.nome, a.nome;
 
-CREATE TABLE usuario (
-	id INT PRIMARY KEY AUTO_INCREMENT,
-	nome VARCHAR(50),
-	email VARCHAR(50),
-	senha VARCHAR(50),
-	fk_empresa INT,
-	FOREIGN KEY (fk_empresa) REFERENCES empresa(id)
-);
 
-CREATE TABLE aviso (
-	id INT PRIMARY KEY AUTO_INCREMENT,
-	titulo VARCHAR(100),
-	descricao VARCHAR(150),
-	fk_usuario INT,
-	FOREIGN KEY (fk_usuario) REFERENCES usuario(id)
-);
+-- 3
+SELECT 
+    s.nome AS casa,
+    MAX(p.pontos) AS maior_pontuacao
+FROM partida p
+JOIN usuarios u ON p.fk_usuario = u.id
+JOIN selecao_casa s ON u.fk_selecao_casa = s.id
+GROUP BY s.id
+ORDER BY maior_pontuacao DESC;
 
-create table aquario (
-/* em nossa regra de negócio, um aquario tem apenas um sensor */
-	id INT PRIMARY KEY AUTO_INCREMENT,
-	descricao VARCHAR(300),
-	fk_empresa INT,
-	FOREIGN KEY (fk_empresa) REFERENCES empresa(id)
-);
-
-/* esta tabela deve estar de acordo com o que está em INSERT de sua API do arduino - dat-acqu-ino */
-
-create table medida (
-	id INT PRIMARY KEY AUTO_INCREMENT,
-	dht11_umidade DECIMAL,
-	dht11_temperatura DECIMAL,
-	luminosidade DECIMAL,
-	lm35_temperatura DECIMAL,
-	chave TINYINT,
-	momento DATETIME,
-	fk_aquario INT,
-	FOREIGN KEY (fk_aquario) REFERENCES aquario(id)
-);
-
-insert into empresa (razao_social, codigo_ativacao) values ('Empresa 1', 'ED145B');
-insert into empresa (razao_social, codigo_ativacao) values ('Empresa 2', 'A1B2C3');
-insert into aquario (descricao, fk_empresa) values ('Aquário de Estrela-do-mar', 1);
-insert into aquario (descricao, fk_empresa) values ('Aquário de Peixe-dourado', 2);
