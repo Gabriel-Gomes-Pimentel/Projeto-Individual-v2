@@ -1,11 +1,11 @@
 const perguntas = [{
 
-    pergunta: "Se você pudesse escolher apenas uma area de magia para praticar qual você escolheria?",
+    pergunta: "Se você pudesse escolher apenas uma área de magia para praticar qual você escolheria?",
     opcoes: {
-        A: "Herbologia",
-        B: "Magizologia",
-        C: "Feitiços",
-        D: "Poções"
+        A: { texto: "Herbologia", imagem: "./assets/imgs/herbology-area.webp" },
+        B: { texto: "Magizologia", imagem: "./assets/imgs/animologia.png" },
+        C: { texto: "Feitiços", imagem: "./assets/imgs/speel-area.webp" },
+        D: { texto: "Poções", imagem: "./assets/imgs/potions-area.webp" }
     },
     respostas: {
         A: "LufaLufa",
@@ -55,7 +55,6 @@ const perguntas = [{
         D: "LufaLufa"
     }
 }
-
 ];
 
 
@@ -77,44 +76,46 @@ function iniciarQuiz() {
 function carregarPergunta() {
 
     const opcoes = document.querySelectorAll('input[name="resposta"]');
-    opcoes.forEach(opcao => opcao.checked = false);
+    for (let i = 0; i < opcoes.length; i++) {
+        opcoes[i].checked = false;
+    }
 
     const perguntaAtual = perguntas[indicePerguntaAtual];
     document.getElementById('numero-pergunta').innerHTML = `Pergunta ${indicePerguntaAtual + 1} de ${perguntas.length}`;
     document.getElementById('texto-pergunta').innerHTML = perguntaAtual.pergunta;
 
-    if (perguntaAtual.opcoes.A) {
-        document.getElementById('texto-opcao-A').innerHTML = perguntaAtual.opcoes.A;
-        document.getElementById('opcao-A').style.display = 'inline';
-    } else {
-        document.getElementById('opcao-A').style.display = 'none';
-        document.getElementById('texto-opcao-A').innerHTML = '';
-    }
+    const letras = ['A', 'B', 'C', 'D'];
 
-    if (perguntaAtual.opcoes.B) {
-        document.getElementById('texto-opcao-B').innerHTML = perguntaAtual.opcoes.B;
-        document.getElementById('opcao-B').style.display = 'inline';
-    } else {
-        document.getElementById('opcao-B').style.display = 'none';
-        document.getElementById('texto-opcao-B').innerHTML = '';
-    }
+    for (let i = 0; i < letras.length; i++) {
+        const letra = letras[i];
+        const opcao = perguntaAtual.opcoes[letra];
+        const label = document.getElementById(`opcao-${letra}`);
+        const texto = document.getElementById(`texto-opcao-${letra}`);
+        const imagem = document.getElementById(`imagem-opcao-${letra}`);
 
-    if (perguntaAtual.opcoes.C) {
-        document.getElementById('texto-opcao-C').innerHTML = perguntaAtual.opcoes.C;
-        document.getElementById('opcao-C').style.display = 'inline';
-    } else {
-        document.getElementById('opcao-C').style.display = 'none';
-        document.getElementById('texto-opcao-C').innerHTML = '';
-    }
+        // Se for a opção existe e ser um objeto
+        if (opcao && typeof opcao == 'object') {
+            label.style.display = 'inline-block';
+            texto.textContent = opcao.texto
+            imagem.src = opcao.imagem;
+            // Se for texto
+        } else if (typeof opcao == 'string') {
+            label.style.display = 'inline-block';
+            texto.textContent = opcao;
+            // Se imagem não for indefinida
+            if (imagem) {
+                imagem.src = '';
+            }
 
-    if (perguntaAtual.opcoes.D) {
-        document.getElementById('texto-opcao-D').innerHTML = perguntaAtual.opcoes.D;
-        document.getElementById('opcao-D').style.display = 'inline';
-    } else {
-        document.getElementById('opcao-D').style.display = 'none';
-        document.getElementById('texto-opcao-D').innerHTML = '';
-    }
+        } else {
+            label.style.display = 'none';
+            texto.textContent = '';
 
+            if (imagem) {
+                imagem.src = '';
+            }
+        }
+    }
 }
 
 function proximaPergunta() {
@@ -130,7 +131,7 @@ function proximaPergunta() {
             carregarPergunta();
         } else {
             mostrarResultado();
-            atualizarGrafico(casa);
+            atualizarGrafico(pontoCasas);
         }
     } else {
         alert("Por favor, selecione uma resposta!");
@@ -155,24 +156,23 @@ function mostrarResultado() {
     }
 
     document.getElementById('nome-casa').innerHTML = casaSelecionada;
-    document.getElementById('mensagem-resultado').innerHTML = `Você foi selecionado para a casa ${casaSelecionada}`;
+    document.getElementById('mensagem-resultado').innerHTML = `Você foi selecionado para a casa <br> <br>`;
 }
 
-function atualizarGrafico(casaSelecionada) {
+function atualizarGrafico(pontoCasas) {
 
     document.getElementById('grafico-container').style.display = 'block';
 
+    const total = pontoCasas.Grifinoria + pontoCasas.Corvinal + pontoCasas.LufaLufa + pontoCasas.Sonserina;
+
     const porcentagens = {
-        Grifinoria: 0,
-        Corvinal: 0,
-        LufaLufa: 0,
-        Sonserina: 0
+        Grifinoria: (pontoCasas.Grifinoria / total) * 100,
+        Corvinal: (pontoCasas.Corvinal / total) * 100,
+        LufaLufa: (pontoCasas.LufaLufa / total) * 100,
+        Sonserina: (pontoCasas.Sonserina / total) * 100,
     };
 
-    porcentagens[casaSelecionada] = 100;
-
     atualizarGraficoBarras(porcentagens);
-
 }
 
 let graficoCasas;

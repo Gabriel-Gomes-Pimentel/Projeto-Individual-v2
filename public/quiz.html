@@ -6,55 +6,57 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quiz</title>
     <link rel="stylesheet" href="/css/quiz.css">
+    <link href="https://fonts.cdnfonts.com/css/harry-potter" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
 </head>
 
 <body>
-    <div id="container-quiz">
-        <button id="botao-iniciar-quiz" onclick="iniciarQuiz()">Iniciar Quiz</button>
-        <div id="quiz" style="display: none;">
+    <div class="container-quiz">
+        <button id="botao-iniciar-quiz" class="botao-iniciar" onclick="iniciarQuiz()">Descubra a sua Casa</button>
+
+        <div id="quiz" class="quiz-container" style="display: none;">
             <div id="container-pergunta">
-                <span id="numero-pergunta"></span>
-                <p id="texto-pergunta"></p>
+                <span id="numero-pergunta" class="numero-pergunta"></span>
+                <p id="texto-pergunta" class="texto-pergunta"></p>
             </div>
+
             <div id="opcoes-respostas" class="opcoes-container">
                 <label id="opcao-A" class="opcao-imagem" data-valor="A">
-                    <input type="radio" name="resposta" value="A">
-                    <img id="imagem-opcao-A" src="" alt="">
-                    <span id="texto-opcao-A"></span>
+                    <input type="radio" name="resposta" value="A" class="opcao-radio">
+                    <img id="imagem-opcao-A" class="opcao-imagem" src="">
+                    <span id="texto-opcao-A" class="texto-opcao"></span>
                 </label><br>
 
                 <label id="opcao-B" class="opcao-imagem" data-valor="B">
-                    <input type="radio" name="resposta" value="B">
-                    <img id="imagem-opcao-B" src="" alt="">
-                    <span id="texto-opcao-B"></span>
+                    <input type="radio" name="resposta" value="B" class="opcao-radio">
+                    <img id="imagem-opcao-B" class="opcao-imagem" src="">
+                    <span id="texto-opcao-B" class="texto-opcao"></span>
                 </label><br>
 
                 <label id="opcao-C" class="opcao-imagem" data-valor="C">
-                    <input type="radio" name="resposta" value="C">
-                    <img id="imagem-opcao-C" src="" alt="">
-                    <span id="texto-opcao-C"></span>
+                    <input type="radio" name="resposta" value="C" class="opcao-radio">
+                    <img id="imagem-opcao-C" class="opcao-imagem" src="">
+                    <span id="texto-opcao-C" class="texto-opcao"></span>
                 </label><br>
 
                 <label id="opcao-D" class="opcao-imagem" data-valor="D">
-                    <input type="radio" name="resposta" value="D">
-                    <img id="imagem-opcao-D" src="" alt="">
-                    <span id="texto-opcao-D"></span>
+                    <input type="radio" name="resposta" value="D" class="opcao-radio">
+                    <img id="imagem-opcao-D" class="opcao-imagem" src="">
+                    <span id="texto-opcao-D" class="texto-opcao"></span>
                 </label><br>
             </div>
-            <button id="botao-proxima" onclick="proximaPergunta()">Próxima Pergunta</button>
+            <button id="botao-proxima" class="botao-proxima" onclick="proximaPergunta()">Pergunta Seguinte</button>
         </div>
-        <div id="resultado" style="display: none">
+        <div id="resultado" class="resultado" style="display: none">
             <h2>Resultado Final</h2>
-            <p id="mensagem-resultado"></p>
-            <p><strong>Sua casa é:<span id="nome-casa"></span> </strong></p>
+            <p id="mensagem-resultado" class="mensagem-resultado"></p>
+            <p><strong><span id="nome-casa" class="nome-casa"></span> </strong></p>
         </div>
     </div>
 
-    <div id="grafico-container" style="width: 600px; margin: 40px auto; display:none;">
-        <h3>Distribuição por Casas em %</h3>
-        <canvas id="grafico-casas" width="600" height="400"></canvas>
+    <div id="grafico-container" class="grafico-container" style="width: 600px; margin: 40px auto; display:none;">
+        <h3 class="grafico-titulo">Distribuição por Casas em %</h3>
+        <canvas id="grafico-casas" class="grafico-canvas" width="600" height="400"></canvas>
     </div>
 
     <script src="/js/quiz.js"></script>

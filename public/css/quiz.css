@@ -1,0 +1,113 @@
+@font-face {
+    font-family: 'Harry Beast';
+    src: url(../assets/fontes/harryp.TTF) format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-image: url(../assets/imgs/background-quiz.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    color: #fff;
+
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.container-quiz {
+    padding: 40px;
+    width: 90%;
+    text-align: center;
+}
+
+.botao-iniciar {
+    font-family: 'Harry Potter', sans-serif;
+    font-size: 64px;
+    color: #ffd700;
+    background-color: #1a237e;
+    padding: 15px 10px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.botao-iniciar:hover {
+    background-color: #3949ab;
+}
+
+.numero-pergunta {
+    font-size: 50px;
+    margin-top: 10px;
+}
+
+.texto-pergunta {
+    font-size: 50px;
+    margin-top: 10px;
+    align-items: center;
+    justify-content: center;
+}
+
+.opcoes-container label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.opcao-imagem img {
+    max-width: 400px;
+    border-radius: 5px;
+}
+
+.texto-opcao {
+    font-size: 20px;
+}
+
+.botao-proxima {
+    margin-top: 20px;
+    font-family: 'Harry Potter', sans-serif;
+    font-size: 60px;
+    background-color: #1a237e;
+    color: #ffd700;
+    padding: 10px 10px;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+}
+
+.botao-proxima:hover {
+    background-color: #3949ab;
+}
+
+.resultado {
+    margin-top: 30px;
+    font-size: 40px;
+}
+
+.nome-casa {
+    color: #ffd700;
+    font-family: 'Harry Beast';
+    font-size: 80px;
+}
+
+.grafico-container {
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    color: #fff;
+}
+
+.grafico-titulo {
+    font-size: 20px;
+    color: #ffd700;
+}
