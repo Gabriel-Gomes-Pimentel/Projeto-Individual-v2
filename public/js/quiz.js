@@ -15,10 +15,10 @@ const perguntas = [{
     }
 },
 {
-    pergunta: "Dia ou Noite",
+    pergunta: "Dia ou Noite?",
     opcoes: {
-        A: "Dia",
-        B: "Noite"
+        A: { texto: "Dia", imagem: "./assets/imgs/dia-noite.png" },
+        B: { texto: "Noite", imagem: "./assets/imgs/dia-noite.png" }
     },
 
     respostas: {
@@ -28,10 +28,10 @@ const perguntas = [{
 },
 
 {
-    pergunta: "Fazer trilha ou Nadar",
+    pergunta: "Fazer trilha ou Nadar?",
     opcoes: {
-        A: "Trilha",
-        B: "Nadar"
+        A: { texto: "Trilha", imagem: "./assets/imgs/fazer trilha-nadar.png" },
+        B: { texto: "Nadar", imagem: "./assets/imgs/fazer trilha-nadar.png" }
     },
 
     respostas: {
@@ -41,12 +41,12 @@ const perguntas = [{
 },
 
 {
-    pergunta: "Se você visse um desconhecido sendo assaldo na sua frente em uma rua deserta",
+    pergunta: "Se você visse um desconhecido sendo assaldo na sua frente em uma rua deserta:",
     opcoes: {
-        A: "Tiraria a varinha do bolso e lançaria uma maldiação no ladrão",
-        B: "Fingiria que nada aconteceu",
-        C: "Ligaria para a polícia",
-        D: "Acalmaria a vítima depois do assalto"
+        A: { texto: "Tiraria a varinha do bolso e lançaria uma maldiação no ladrão", imagem: "./assets/imgs/cenario-assustador.png" },
+        B: { texto: "Fingiria que nada aconteceu", imagem: "./assets/imgs/cenario-assustador.png" },
+        C: { texto: "Ligaria para a polícia", imagem: "./assets/imgs/cenario-assustador.png" },
+        D: { texto: "Acalmaria a vítima depois do assalto", imagem: "./assets/imgs/cenario-assustador.png" }
     },
     respostas: {
         A: "Grifinoria",

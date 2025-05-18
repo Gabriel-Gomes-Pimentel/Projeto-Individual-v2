@@ -12,7 +12,7 @@
 }
 
 body {
-    background-image: url(../assets/imgs/background-quiz.jpg);
+    background-image: url(../assets/imgs/bg-stars-quiz.jpg);
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -100,7 +100,6 @@ body {
 }
 
 .grafico-container {
-    background-color: rgba(0, 0, 0, 0.6);
     padding: 20px;
     border-radius: 12px;
     text-align: center;
