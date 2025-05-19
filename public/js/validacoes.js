@@ -139,8 +139,8 @@ function validarCadastro(event) {
         var nome = input_nome.value;
         var email = input_email.value;
         var senha = input_senha.value;
-        var casa = document.getElementById("selecao_casa").value;
-        var areaMagica = document.getElementById("area_magica").value;
+
+
 
         fetch("/usuarios/cadastrar", {
             method: "POST",
@@ -150,15 +150,12 @@ function validarCadastro(event) {
             body: JSON.stringify({
                 nomeServer: nome,
                 emailServer: email,
-                senhaServer: senha,
-                id_selecao_casaVincularServer: casa,
-                id_area_magicaVincularServer: areaMagica
+                senhaServer: senha
             }),
         })
-            .then((response) => response.json())
-            .then((data) => {
-                if (data.error) {
-                    alert("Erro ao cadastrar: " + data.error);
+            .then(function (resposta) {
+                if (resposta.error) {
+                    alert("Erro ao cadastrar: " + resposta.error);
 
                 } else {
                     alert("Cadastro realizado com sucesso!");
