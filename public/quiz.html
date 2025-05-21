@@ -20,31 +20,15 @@
                 <p id="texto-pergunta" class="texto-pergunta"></p>
             </div>
 
-            <div id="opcoes-respostas" class="opcoes-container">
-                <label id="opcao-A" class="opcao-imagem" data-valor="A">
-                    <input type="radio" name="resposta" value="A" class="opcao-radio">
-                    <img id="imagem-opcao-A" class="opcao-imagem" src="">
-                    <span id="texto-opcao-A" class="texto-opcao"></span>
+            <div id="carrossel-container" style="display: none;">
+                <button onclick="voltarOpcao()">⬅️</button>
+                <label id="opcao-atual" class="carrosel-item" data-valor="A">
+                    <img id="imagem-opcao" src="" style="max-width: 300px;"><br>
+                    <span id="texto-opcao" class="texto-opcao"></span>
                 </label><br>
-
-                <label id="opcao-B" class="opcao-imagem" data-valor="B">
-                    <input type="radio" name="resposta" value="B" class="opcao-radio">
-                    <img id="imagem-opcao-B" class="opcao-imagem" src="">
-                    <span id="texto-opcao-B" class="texto-opcao"></span>
-                </label><br>
-
-                <label id="opcao-C" class="opcao-imagem" data-valor="C">
-                    <input type="radio" name="resposta" value="C" class="opcao-radio">
-                    <img id="imagem-opcao-C" class="opcao-imagem" src="">
-                    <span id="texto-opcao-C" class="texto-opcao"></span>
-                </label><br>
-
-                <label id="opcao-D" class="opcao-imagem" data-valor="D">
-                    <input type="radio" name="resposta" value="D" class="opcao-radio">
-                    <img id="imagem-opcao-D" class="opcao-imagem" src="">
-                    <span id="texto-opcao-D" class="texto-opcao"></span>
-                </label><br>
+                <button onclick="avancarOpcao()">➡️</button>
             </div>
+
             <button id="botao-proxima" class="botao-proxima" onclick="proximaPergunta()">Pergunta Seguinte</button>
         </div>
         <div id="resultado" class="resultado" style="display: none">
@@ -59,7 +43,7 @@
         <canvas id="grafico-casas" class="grafico-canvas" width="600" height="400"></canvas>
     </div>
 
-    <script src="/js/quiz.js"></script>
+    <script src="/js/validacoesQuiz.js"></script>
 </body>
 
 </html>

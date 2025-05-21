@@ -19,7 +19,6 @@ body {
     color: #fff;
 
     min-height: 100vh;
-    width: 100%;
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -53,19 +52,32 @@ body {
 .texto-pergunta {
     font-size: 50px;
     margin-top: 10px;
-    align-items: center;
-    justify-content: center;
 }
 
-.opcoes-container label {
+#carrossel-container {
     display: flex;
     align-items: center;
-    cursor: pointer;
+    justify-content: center;
+    gap: 25px;
+    margin-top: 40px;
 }
 
-.opcao-imagem img {
-    max-width: 400px;
-    border-radius: 5px;
+.carrosel-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+#imagem-opcao {
+    width: 300px; 
+    height: 300px;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+#imagem-opcao:hover {
+    transform: scale(1.05);
 }
 
 .texto-opcao {

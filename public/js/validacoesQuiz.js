@@ -30,8 +30,8 @@ const perguntas = [{
 {
     pergunta: "Fazer trilha ou Nadar?",
     opcoes: {
-        A: { texto: "Trilha", imagem: "./assets/imgs/fazer trilha-nadar.png" },
-        B: { texto: "Nadar", imagem: "./assets/imgs/fazer trilha-nadar.png" }
+        A: { texto: "Nadar", imagem: "./assets/imgs/fazer trilha-nadar.png" },
+        B: { texto: "Trilha", imagem: "./assets/imgs/fazer trilha-nadar.png" }
     },
 
     respostas: {
@@ -57,15 +57,16 @@ const perguntas = [{
 }
 ];
 
-
 let indicePerguntaAtual = 0;
 let pontoCasas = {
     Grifinoria: 0,
     Corvinal: 0,
     LufaLufa: 0,
     Sonserina: 0
-
 };
+
+let opcoesAtual = 0;
+let letrasAtuais = [];
 
 function iniciarQuiz() {
     document.getElementById('botao-iniciar-quiz').style.display = 'none';
@@ -74,67 +75,56 @@ function iniciarQuiz() {
 }
 
 function carregarPergunta() {
-
-    const opcoes = document.querySelectorAll('input[name="resposta"]');
-    for (let i = 0; i < opcoes.length; i++) {
-        opcoes[i].checked = false;
-    }
-
     const perguntaAtual = perguntas[indicePerguntaAtual];
     document.getElementById('numero-pergunta').innerHTML = `Pergunta ${indicePerguntaAtual + 1} de ${perguntas.length}`;
     document.getElementById('texto-pergunta').innerHTML = perguntaAtual.pergunta;
 
-    const letras = ['A', 'B', 'C', 'D'];
+    letrasAtuais = Object.keys(perguntaAtual.opcoes);
+    opcoesAtual = 0;
 
-    for (let i = 0; i < letras.length; i++) {
-        const letra = letras[i];
-        const opcao = perguntaAtual.opcoes[letra];
-        const label = document.getElementById(`opcao-${letra}`);
-        const texto = document.getElementById(`texto-opcao-${letra}`);
-        const imagem = document.getElementById(`imagem-opcao-${letra}`);
+    const carrossel = document.getElementById('carrossel-container');
+    carrossel.style.display = 'flex';
 
-        // Se for a opção existe e ser um objeto
-        if (opcao && typeof opcao == 'object') {
-            label.style.display = 'inline-block';
-            texto.textContent = opcao.texto
-            imagem.src = opcao.imagem;
-            // Se for texto
-        } else if (typeof opcao == 'string') {
-            label.style.display = 'inline-block';
-            texto.textContent = opcao;
-            // Se imagem não for indefinida
-            if (imagem) {
-                imagem.src = '';
-            }
+    mostrarOpcaoAtual();
 
-        } else {
-            label.style.display = 'none';
-            texto.textContent = '';
+    document.getElementById('carrossel-container').style.display = 'flex';
+}
 
-            if (imagem) {
-                imagem.src = '';
-            }
-        }
+function mostrarOpcaoAtual() {
+    const letra = letrasAtuais[opcoesAtual];
+    const opcao = perguntas[indicePerguntaAtual].opcoes[letra];
+
+    document.getElementById("imagem-opcao").src = opcao.imagem;
+    document.getElementById("texto-opcao").innerHTML = opcao.texto;
+}
+
+function voltarOpcao() {
+    if (opcoesAtual > 0) {
+        opcoesAtual--;
+        mostrarOpcaoAtual();
+    }
+}
+
+function avancarOpcao() {
+    if (opcoesAtual < letrasAtuais.length - 1) {
+        opcoesAtual++;
+        mostrarOpcaoAtual();
     }
 }
 
 function proximaPergunta() {
-    const opcaoSelecionada = document.querySelector('input[name= "resposta"]:checked');
+    const letraSelecionada = letrasAtuais[opcoesAtual];
+    const casa = perguntas[indicePerguntaAtual].respostas[letraSelecionada];
 
-    if (opcaoSelecionada) {
-        const resposta = opcaoSelecionada.value;
-        const casa = perguntas[indicePerguntaAtual].respostas[resposta];
-        pontoCasas[casa]++;
+    pontoCasas[casa]++;
 
-        indicePerguntaAtual++
-        if (indicePerguntaAtual < perguntas.length) {
-            carregarPergunta();
-        } else {
-            mostrarResultado();
-            atualizarGrafico(pontoCasas);
-        }
+    indicePerguntaAtual++
+    if (indicePerguntaAtual < perguntas.length) {
+        carregarPergunta();
     } else {
-        alert("Por favor, selecione uma resposta!");
+        document.getElementById('carrossel-container').style.display = 'none';
+        mostrarResultado();
+        atualizarGrafico(pontoCasas);
     }
 }
 
