@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quiz</title>
-    <link rel="stylesheet" href="/css/quiz.css">
+    <link rel="stylesheet" href="./css/quiz.css">
     <link href="https://fonts.cdnfonts.com/css/harry-potter" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -87,9 +87,9 @@
         },
 
         {
-            pergunta: "Se você visse um desconhecido sendo assaldo na sua frente em uma rua deserta:",
+            pergunta: "Se você visse um desconhecido sendo assaltado na sua frente em uma rua deserta:",
             opcoes: {
-                A: { texto: "Tiraria a varinha do bolso e lançaria uma maldiação no ladrão", imagem: "./assets/imgs/cenario-assustador.png" },
+                A: { texto: "Tiraria a varinha do bolso e lançaria uma maldição no ladrão", imagem: "./assets/imgs/cenario-assustador.png" },
                 B: { texto: "Fingiria que nada aconteceu", imagem: "./assets/imgs/cenario-assustador.png" },
                 C: { texto: "Ligaria para a polícia", imagem: "./assets/imgs/cenario-assustador.png" },
                 D: { texto: "Acalmaria a vítima depois do assalto", imagem: "./assets/imgs/cenario-assustador.png" }
@@ -190,6 +190,8 @@
 
         carregarContadores();
 
+        var idCasa=0;
+
         // var casaSelecionada = '';
         function mostrarResultado() {
             document.getElementById('quiz').style.display = 'none';
@@ -207,11 +209,52 @@
                 }
             }
 
+            if (casaSelecionada == 'Grifinoria') {
+                idCasa = 1;
+            } else if (casaSelecionada == 'Corvinal') {
+                idCasa = 2;
+            }
+            else if (casaSelecionada == 'Sonserina') {
+                idCasa = 3;
+            }
+            else if (casaSelecionada == 'LufaLufa') {
+                idCasa = 4;
+            }
+
             document.getElementById('nome-casa').innerHTML = casaSelecionada;
             document.getElementById('mensagem-resultado').innerHTML = `Você foi selecionado para a casa <br> <br>`;
 
             contadoresCasas[casaSelecionada]++;
             localStorage.setItem('contadoresCasas', JSON.stringify(contadoresCasas))// transforma JSON em String
+
+            cadastrar();
+
+        }
+
+        function cadastrar() {
+            const dados = {
+                idUserServer: sessionStorage.ID_USUARIO,
+                idCasaServer: idCasa,
+            }
+            fetch("/quiz/cadastrar", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(dados),
+            })
+                .then(function (resposta) {
+                    if (resposta.error) {
+                        console.log('Pontuação cadastrada com sucesso')
+
+                    } else {
+                        console.log('Erro no cadastro da pontuação')
+                    }
+                })
+                .catch((error) => {
+                    console.error("Erro:", error);
+                    alert("Erro no servidor. Tente novamente");
+                });
 
         }
 

@@ -1,0 +1,56 @@
+body {
+    font-family: 'Harry Potter', sans-serif;
+    height: 100vh;
+    margin: 0;
+}
+
+#menu-lateral{
+    background-color: blue;
+    width: 19%;
+    height: 100vh;
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+}
+
+.logo{
+    padding-top: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap:5px;
+    margin-bottom: 20px
+}
+
+.logo img{
+    width: 250px;
+    height: auto
+}
+
+.hello{
+    font-size: 1.5rem
+}
+
+#menu-lateral nav ul{
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+}
+
+
+#menu-lateral nav ul li{
+    display: flex;
+    align-items: center;
+}
+
+#menu-lateral nav ul li span.material-symbols-outlined{
+    font-size: 3rem;
+    color: white;
+}
+
+#menu-lateral nav ul li a{
+    color: white;
+    font-size: 1.5rem;
+    text-decoration: none;
+}
+

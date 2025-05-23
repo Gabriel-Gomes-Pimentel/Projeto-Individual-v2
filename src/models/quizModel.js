@@ -20,8 +20,8 @@ GROUP BY c.id;
     return database.executar(instrucaoSql);
 }
 
-function cadastrar(casa) {
-    var instrucaoSql = `INSERT INTO selecao_casa (casa) VALUES ('${casa}');`;
+function cadastrar(idUserServer, idCasaServer) {
+    var instrucaoSql = `INSERT INTO partida (id, fk_usuario, fk_idCasa) VALUES (default, ${idUserServer}, ${idCasaServer});`;
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 }

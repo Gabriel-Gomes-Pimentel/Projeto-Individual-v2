@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+    <link rel="stylesheet" href="../css/dash.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <header id="menu-lateral">
+        <div class="logo">
+            <img src="../assets/icon/logo.png" alt="">
+            <nav>
+                <h3 class="hello">Olá, <span id="b_usuario">usuário</span>!</h3>
+                <ul>
+                    <li class="atual" id="dashboard">
+                        <span class="material-symbols-outlined">
+                            monitoring
+                        </span>
+                        <a href="./dashboardHarryPotter.html">Dashboard</a>
+                    </li>
+                    <li id="distribuicaoCasas">
+                        <span class="material-symbols-outlined">
+                            person
+                        </span>
+                        <a href="./casa.html">Perfil</a>
+                    </li>
+                    <li id="distribuicaoCasas">
+                        <span class="material-symbols-outlined">
+                            quiz
+                        </span>
+                        <a href="../quiz.html">Quiz</a>
+                    </li>
+                    <li id="sair">
+                         <span class="material-symbols-outlined">
+                            logout
+                        </span>
+                        <a onclick="limparSessao()">Sair</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+</body>
+
+</html>
+
+<script>
+    b_usuario.innerHTML = sessionStorage.NOME_USUARIO;
+
+    function limparSessao(){
+        sessionStorage.clear();
+        window.location = "../login.html"
+    }
+</script>

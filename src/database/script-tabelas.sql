@@ -8,16 +8,16 @@ USE HarryPotter;
 =========================================================================================================
 */
 CREATE TABLE selecao_casa (
-    id INT PRIMARY KEY AUTO_INCREMENT,
+    id INT PRIMARY KEY,
     nome VARCHAR(45) NOT NULL
 );
 
 -- Inserindo as 4 casas do Castelobruxo
-INSERT INTO selecao_casa (nome) VALUES
-('Tapiréu'), 
-('Itapara'), 
-('Tibouchina'), 
-('Araribóia');
+INSERT INTO selecao_casa (id, nome) VALUES
+(1, 'Tapiréu'), 
+(2,'Itapara'), 
+(3,'Tibouchina'), 
+(4,'Araribóia');
 
 /* ============================== TABELA AREA_MAGICA =====================================================
 -- Finalidade: Armazena diferentes áreas do conhecimento mágico (Poções, Herbologia, Magizologia e Feitiços).
@@ -38,7 +38,7 @@ CREATE TABLE area_magica (
 CREATE TABLE usuarios (
     id INT PRIMARY KEY AUTO_INCREMENT,
     nome VARCHAR(45) NOT NULL,
-	email VARCHAR(45) NOT NULL UNIQUE,
+	email VARCHAR(45) NOT NULL,
     senha VARCHAR(45) NOT NULL,
     fk_selecao_casa INT,
     fk_area_magica INT,
@@ -59,9 +59,11 @@ CREATE TABLE partida (
     id INT PRIMARY KEY AUTO_INCREMENT,
     fk_usuario INT NOT NULL,
     data_partida DATETIME DEFAULT CURRENT_TIMESTAMP,
-    pontos INT NOT NULL,
+    fk_idCasa INT,
     CONSTRAINT fkPartidaUsuario FOREIGN KEY (fk_usuario)
-        REFERENCES usuarios (id)
+        REFERENCES usuarios (id),
+	CONSTRAINT fkPartidaCasa FOREIGN KEY (fk_idCasa)
+		REFERENCES selecao_casa(id)
 );
 
 /*======================================QUERIES===========================================================
@@ -102,3 +104,4 @@ JOIN selecao_casa s ON u.fk_selecao_casa = s.id
 GROUP BY s.id
 ORDER BY maior_pontuacao DESC;
 
+select * from usuarios;

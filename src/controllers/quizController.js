@@ -18,6 +18,24 @@ function selecionar(req, res) {
         });
 }
 
+function cadastrar(req, res) {
+    var idCasaServer = req.body.idCasaServer;
+    var idUserServer = req.body.idUserServer;
+
+    if (!idCasaServer) {
+        res.status(400).send("Sua casa está undefined")
+    }
+
+    if (!idUserServer) {
+        res.status(400).send("Seu user está undefined")
+    }
+
+    quizModel.cadastrar(idUserServer, idCasaServer).then(function (resposta) {
+        res.status(200).send("Pontuacao enviada ao banco de dados com sucesso!")
+
+    })
+}
+
 function interesses(req, res) {
     quizModel.interesseAreaMagica()
         .then((resultado) => {
@@ -39,5 +57,6 @@ function interesses(req, res) {
 
 module.exports = {
     selecionar,
-    interesses
+    interesses,
+    cadastrar
 }
