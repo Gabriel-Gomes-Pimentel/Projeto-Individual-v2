@@ -7,13 +7,50 @@ var database = require("../database/config")
 //     `;
 
 function selecionar() {
-    console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function entrar(): ")
-    var instrucaoSql = `
-       ;
+    // console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function entrar(): ")
+    var instrucaoSql = ` SELECT 
+    c.nome AS casa,
+    COUNT(u.id) AS total_usuarios,
+    ROUND(100 * COUNT(u.id) / (SELECT COUNT(*) FROM usuarios), 2) AS porcentagem
+FROM selecao_casa c
+LEFT JOIN usuarios u ON u.fk_selecao_casa = c.id
+GROUP BY c.id;
     `;
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 }
+
+function cadastrar(casa) {
+    var instrucaoSql = `INSERT INTO selecao_casa (casa) VALUES ('${casa}');`;
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+function interesseAreaMagica() {
+    var instrucaoSql = `SELECT 
+    c.nome AS casa,
+    a.nome AS areaMagica,
+    COUNT(u.id) AS total_interesse
+FROM usuarios u
+JOIN selecao_casa c ON u.fk_selecao_casa = c.id
+JOIN area_magica a ON u.fk_area_magica = a.id
+GROUP BY c.nome, a.nome;`;
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+// function rankingCasas() {
+//     var instrucaoSql = `SELECT 
+//     s.nome AS casa,
+//     MAX(p.pontos) AS maior_pontuacao
+// FROM partida p
+// JOIN usuarios u ON p.fk_usuario = u.id
+// JOIN selecao_casa s ON u.fk_selecao_casa = s.id
+// GROUP BY s.id
+// ORDER BY maior_pontuacao DESC;`;
+//     console.log("Executando a instrução SQL: \n" + instrucaoSql);
+//     return database.executar(instrucaoSql);
+// }
 
 // Coloque os mesmos parâmetros aqui. Vá para a var instrucaoSql
 // function cadastrar(nome, email, senha) {
@@ -29,7 +66,7 @@ function selecionar() {
 // }
 
 module.exports = {
-    selecionar
-    // autenticar,
-    // cadastrar
+    selecionar,
+    cadastrar,
+    interesseAreaMagica
 };

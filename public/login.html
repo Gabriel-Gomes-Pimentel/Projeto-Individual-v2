@@ -46,7 +46,7 @@
                         </svg>
                     </span>
                 </div>
-                <button type="submit" onclick="validarLogin(event)">Log in</button>
+                    <button type="button" onclick="validarLogin(event)">Log in</button>
         </form>
     </section>
 
@@ -56,6 +56,23 @@
     </footer>
 
     <script>
+        function alternarVisibilidadeSenha() {
+
+            const inputSenha = document.getElementById('input_senha');
+            const iconeOlhoAberto = document.getElementById('iconeOlhoAberto');
+            const iconeOlhoFechado = document.getElementById('iconeOlhoFechado');
+
+            if (inputSenha.type == 'password') {
+                inputSenha.type = 'text';
+                iconeOlhoAberto.style.display = 'inline';
+                iconeOlhoFechado.style.display = 'none';
+            } else {
+                inputSenha.type = 'password'
+                iconeOlhoAberto.style.display = 'none';
+                iconeOlhoFechado.style.display = 'inline';
+            }
+        }
+
         function validarLogin(event) {
             event.preventDefault();
 
@@ -81,20 +98,26 @@
                     senhaServer: senhaVar
                 })
             }).then(function (resposta) {
-                console.log("ESTOU NO THEN DO entrar()!");
-
                 if (resposta.ok) {
-                    console.log(resposta);
-
                     resposta.json().then(json => {
                         console.log(json);
                         console.log(JSON.stringify(json));
                         sessionStorage.EMAIL_USUARIO = json.email;
                         sessionStorage.NOME_USUARIO = json.nome;
                         sessionStorage.ID_USUARIO = json.id;
+
+                        setTimeout(function () {
+                            window.location = "quiz.html";
+                        }, 1000); // apenas para exibir o loading
+
                     });
-                    
-            }
+                } else {
+                    resposta.text().then(texto => {
+                        console.error(texto);
+                    });
+                }
+            });
+        }
     </script>
 </body>
 
