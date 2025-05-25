@@ -12,7 +12,9 @@
 <body>
     <header id="menu-lateral">
         <div class="logo">
-            <img src="../assets/icon/logo.png" alt="">
+            <a href="../index.html">
+                <img src="../assets/icon/logo.png">
+            </a>
             <nav>
                 <h3 class="hello">Olá, <span id="b_usuario">usuário</span>!</h3>
                 <ul>
@@ -20,7 +22,7 @@
                         <span class="material-symbols-outlined">
                             monitoring
                         </span>
-                        <a href="./dashboardHarryPotter.html">Dashboard</a>
+                        <a href="../dashboard/dashboardHarryPotter.html">Dashboard</a>
                     </li>
                     <li id="distribuicaoCasas">
                         <span class="material-symbols-outlined">
@@ -35,7 +37,7 @@
                         <a href="../quiz.html">Quiz</a>
                     </li>
                     <li id="sair">
-                         <span class="material-symbols-outlined">
+                        <span class="material-symbols-outlined">
                             logout
                         </span>
                         <a onclick="limparSessao()">Sair</a>
@@ -51,7 +53,7 @@
 <script>
     b_usuario.innerHTML = sessionStorage.NOME_USUARIO;
 
-    function limparSessao(){
+    function limparSessao() {
         sessionStorage.clear();
         window.location = "../login.html"
     }

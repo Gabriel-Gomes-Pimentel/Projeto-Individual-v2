@@ -114,6 +114,8 @@
         let opcoesAtual = 0;
         let letrasAtuais = [];
 
+        let proximaAtualizacao = null;
+
         function iniciarQuiz() {
             document.getElementById('botao-iniciar-quiz').style.display = 'none';
             document.getElementById('quiz').style.display = 'block';
@@ -174,41 +176,38 @@
             }
         }
 
-        let contadoresCasas = {
-            Grifinoria: 0,
-            Corvinal: 0,
-            LufaLufa: 0,
-            Sonserina: 0
-        }
+        // Qual casa o usuario foi selecionado
+        var idCasa = 0;
 
-        function carregarContadores() {
-            const dados = localStorage.getItem('contadoresCasas'); // Só salva em string
-            if (dados) {
-                contadoresCasas = JSON.parse(dados);// Transforma string em objeto
-            }
-        }
-
-        carregarContadores();
-
-        var idCasa=0;
-
-        // var casaSelecionada = '';
         function mostrarResultado() {
             document.getElementById('quiz').style.display = 'none';
             document.getElementById('resultado').style.display = 'block';
 
+            let casas = ["Grifinoria", "Corvinal", "LufaLufa", "Sonserina"];
             let maiorPontuacao = 0;
-            const casas = ["Grifinoria", "Corvinal", "LufaLufa", "Sonserina"];
+            let casaSelecionada = '';
 
             for (let i = 0; i < casas.length; i++) {
-                const casa = casas[i];
-                if (pontoCasas[casa] > maiorPontuacao) {
-                    maiorPontuacao = pontoCasas[casa];
-                    casaSelecionada = casa;
-                    console.log(casaSelecionada)
+                let casaAtual = casas[i];
+                if (pontoCasas[casaAtual] > maiorPontuacao) {
+                    maiorPontuacao = pontoCasas[casaAtual];
                 }
             }
 
+            let casasEmpatadas = [];
+            for (let i = 0; i < casas.length; i++) {
+                let casaAtual = casas[i];
+                if (pontoCasas[casaAtual] == maiorPontuacao) {
+                    casasEmpatadas.push(casaAtual);
+                }
+            }
+
+            // NÚMERO ALEATÓRIO PARA ESCOLHER UMA CASA ENTRE AS EMPATADAS
+            let indiceAleatorio = Math.floor(Math.random() * casasEmpatadas.length);
+            casaSelecionada = casasEmpatadas[indiceAleatorio]
+
+
+            // DEFINE O ID DA SUA CASA CORRESPONDETE O RESULTADO DO QUIZ
             if (casaSelecionada == 'Grifinoria') {
                 idCasa = 1;
             } else if (casaSelecionada == 'Corvinal') {
@@ -222,16 +221,13 @@
             }
 
             document.getElementById('nome-casa').innerHTML = casaSelecionada;
-            document.getElementById('mensagem-resultado').innerHTML = `Você foi selecionado para a casa <br> <br>`;
-
-            contadoresCasas[casaSelecionada]++;
-            localStorage.setItem('contadoresCasas', JSON.stringify(contadoresCasas))// transforma JSON em String
+            document.getElementById('mensagem-resultado').innerHTML = `Você foi selecionado para a casa <br><br>`;
 
             cadastrar();
-
         }
 
         function cadastrar() {
+            console.log("ID do usuário no sessionStorage", sessionStorage.ID_USUARIO);
             const dados = {
                 idUserServer: sessionStorage.ID_USUARIO,
                 idCasaServer: idCasa,
@@ -244,50 +240,63 @@
                 body: JSON.stringify(dados),
             })
                 .then(function (resposta) {
-                    if (resposta.error) {
-                        console.log('Pontuação cadastrada com sucesso')
-
-                    } else {
-                        console.log('Erro no cadastro da pontuação')
+                    if (!resposta.ok) {
+                        throw new Error("Erro na requisição: " + resposta.status);
                     }
+                    return resposta.json();
+                })
+                .then(function (dadosResposta) {
+                    console.log('Pontuação cadastrada com sucesso', dadosResposta);
+
+                    atualizarGrafico();
+                    setTimeout(() => {
+                        document.getElementById('grafico-container').style.display = 'block';
+                    }, 300);
                 })
                 .catch((error) => {
                     console.error("Erro:", error);
-                    alert("Erro no servidor. Tente novamente");
+                    alert("Erro ao cadastrar a pontuação. Tente novamente");
                 });
 
         }
 
         function atualizarGrafico() {
+            fetch("/quiz/distribuicao", { cache: 'no-store' })
+                .then(response => response.json())
+                .then(dados => {
+                    const total = dados.reduce((acc, item) => acc + item.total_partidas, 0);
+                    const porcentagens = {
+                        Grifinoria: 0,
+                        Corvinal: 0,
+                        LufaLufa: 0,
+                        Sonserina: 0
+                    };
 
-            document.getElementById('grafico-container').style.display = 'block';
+                    dados.forEach(item => {
+                        let nome = item.casa;
+                        let percent = ((item.total_partidas / total) * 100).toFixed(2);
 
-            const total = contadoresCasas.Grifinoria + contadoresCasas.Corvinal + contadoresCasas.LufaLufa + contadoresCasas.Sonserina;
+                        if (nome == "Grifinoria") porcentagens.Grifinoria = percent;
+                        else if (nome == "Corvinal") porcentagens.Corvinal = percent;
+                        else if (nome == "LufaLufa") porcentagens.LufaLufa = percent;
+                        else if (nome == "Sonserina") porcentagens.Sonserina = percent;
+                    });
 
-            const porcentagens = {
-                Grifinoria: (contadoresCasas.Grifinoria / total) * 100,
-                Corvinal: (contadoresCasas.Corvinal / total) * 100,
-                LufaLufa: (contadoresCasas.LufaLufa / total) * 100,
-                Sonserina: (contadoresCasas.Sonserina / total) * 100,
-            };
+                    atualizarGraficoBarras(porcentagens);
+                })
+                .catch(erro => {
+                    console.error("Erro ao obter dados do gráfico:", erro);
+                });
+        }
 
-            // if (casaSelecionada != Grifinoria) {
-            //     pontoCasas.Grifinoria = 0;
-            // }
-            // if (casaSelecionada != Corvinal) {
-            //     pontoCasas.Corvinal = 0;
-            // }
-            // if (casaSelecionada != LufaLufa) {
-            //     pontoCasas.LufaLufa = 0;
-            // }
-            // if (casaSelecionada != Sonserina) {
-            //     pontoCasas.Sonserina = 0;
-            // } else {
-            //     atualizarGraficoBarras(porcentagens); 
-            // }
+        function agendarAtualizacaoGrafico() {
+            if (proximaAtualizacao) {
+                clearTimeout(proximaAtualizacao);
+            }
 
-            atualizarGraficoBarras(porcentagens);
-
+            proximaAtualizacao = setTimeout(() => {
+                atualizarGrafico()
+            }, 500)
         }
 
         let graficoCasas;

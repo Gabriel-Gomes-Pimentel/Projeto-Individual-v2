@@ -14,10 +14,10 @@ CREATE TABLE selecao_casa (
 
 -- Inserindo as 4 casas do Castelobruxo
 INSERT INTO selecao_casa (id, nome) VALUES
-(1, 'Tapiréu'), 
-(2,'Itapara'), 
-(3,'Tibouchina'), 
-(4,'Araribóia');
+(1, 'Grifinoria'), 
+(2,'Corvinal'), 
+(3,'Sonserina'), 
+(4,'LufaLufa');
 
 /* ============================== TABELA AREA_MAGICA =====================================================
 -- Finalidade: Armazena diferentes áreas do conhecimento mágico (Poções, Herbologia, Magizologia e Feitiços).
@@ -65,6 +65,8 @@ CREATE TABLE partida (
 	CONSTRAINT fkPartidaCasa FOREIGN KEY (fk_idCasa)
 		REFERENCES selecao_casa(id)
 );
+
+select * from partida;
 
 /*======================================QUERIES===========================================================
 1- Porcentagem de usuários por casa

@@ -13,4 +13,8 @@ router.get("/selecionar", function (req, res) {
     quizController.selecionar(req, res);
 });
 
+router.get("/distribuicao", function (req, res) {
+    quizController.distribuicao(req,res);
+});
+
 module.exports = router;

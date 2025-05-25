@@ -6,6 +6,13 @@ var database = require("../database/config")
 //         SELECT id, nome, email, fk_selecao_casa FROM usuarios WHERE email = '${email}' AND senha = '${senha}';
 //     `;
 
+function atualizarCasaUsuario(idUser, idCasa) {
+    var instrucaoSql = ` UPDATE usuarios SET fk_selecao_casa = ${idCasa} WHERE id = ${idUser};
+    `;
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
 function selecionar() {
     // console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function entrar(): ")
     var instrucaoSql = ` SELECT 
@@ -25,6 +32,13 @@ function cadastrar(idUserServer, idCasaServer) {
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 }
+
+function distribuicaoPartidaPorCasa() {
+    var instrucaoSql = `Select c.nome AS casa, COUNT(p.id) AS total_partidas FROM selecao_casa c LEFT JOIN partida p ON p.fk_idCasa = c.id GROUP BY c.id`;
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
 
 function interesseAreaMagica() {
     var instrucaoSql = `SELECT 
@@ -68,5 +82,7 @@ GROUP BY c.nome, a.nome;`;
 module.exports = {
     selecionar,
     cadastrar,
-    interesseAreaMagica
+    interesseAreaMagica,
+    distribuicaoPartidaPorCasa,
+    atualizarCasaUsuario
 };
