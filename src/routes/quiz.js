@@ -14,7 +14,11 @@ router.get("/selecionar", function (req, res) {
 });
 
 router.get("/distribuicao", function (req, res) {
-    quizController.distribuicao(req,res);
+    quizController.distribuicao(req, res);
 });
+
+// router.get("/total", function (req, res) {
+//     quizController.totalBruxos(req, res);
+// });
 
 module.exports = router;

@@ -53,6 +53,21 @@ function cadastrar(req, res) {
         });
 }
 
+// function totalBruxos(req, res) {
+//     quizModel.totalAlunos()
+//         .then((resultado) => {
+//             if (resultado.length > 0) {
+//                 res.status(200).json(resultado[0]);
+//             } else {
+//                 res.status(204).send("Nenhum dado encontrado");
+//             }
+//         })
+//         .catch((erro) => {
+//             console.log("Erro ao buscar total de alunos: ", erro.sqlMessage);
+//             res.status(500).json(erro.sqlMessage);
+//         })
+// }
+
 function distribuicao(req, res) {
     quizModel.distribuicaoPartidaPorCasa()
         .then((resultado) => {
@@ -92,4 +107,5 @@ module.exports = {
     interesses,
     cadastrar,
     distribuicao
+    // totalBruxos
 }

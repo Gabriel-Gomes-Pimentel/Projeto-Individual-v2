@@ -70,11 +70,11 @@ select * from partida;
 
 /*======================================QUERIES===========================================================
 1- Porcentagem de usuários por casa
+-Kpi: Total de bruxos na escola
 2- Radar: interesses por área mágica de cada casa
 3- Mostrar o ranking das casas, baseado na maior pontuação individual de um jogador de cada casa.
 ==========================================================================================================
 */
-
 -- 1
 SELECT 
     c.nome AS casa,
@@ -84,6 +84,11 @@ FROM selecao_casa c
 LEFT JOIN usuarios u ON u.fk_selecao_casa = c.id
 GROUP BY c.id;
 
+-- KPI 
+-- SELECT
+-- 	COUNT(*) AS total_bruxos
+-- FROM usuarios
+-- WHERE fk_selecao_casa IS NOT NULL;    
 
 -- 2
 SELECT 

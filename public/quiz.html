@@ -40,6 +40,11 @@
 
     <div id="grafico-container" class="grafico-container" style="width: 600px; margin: 40px auto; display:none;">
         <h3 class="grafico-titulo">Distribuição por Casas em %</h3>
+        <div id="kpi-container" style="text-align: center; margin: 30px auto; display: none;">
+            <p id="kpi-totalBruxos" style="font-size: 18px;"></p>
+            <p id="kpi-casaPopular" style="font-size: 18px;"></p>
+            <p id="kpi-totalCasaPopular" style="font-size: 18px;"></p>
+        </div>
         <canvas id="grafico-casas" class="grafico-canvas" width="600" height="400"></canvas>
     </div>
 
@@ -272,15 +277,30 @@
                         Sonserina: 0
                     };
 
+                    let casaMaisPopular = '';
+                    let maiorValor = 0;
+
                     dados.forEach(item => {
                         let nome = item.casa;
+                        let totalCasa = item.total_partidas;
                         let percent = ((item.total_partidas / total) * 100).toFixed(2);
 
                         if (nome == "Grifinoria") porcentagens.Grifinoria = percent;
                         else if (nome == "Corvinal") porcentagens.Corvinal = percent;
                         else if (nome == "LufaLufa") porcentagens.LufaLufa = percent;
                         else if (nome == "Sonserina") porcentagens.Sonserina = percent;
+
+                        if (totalCasa > maiorValor) {
+                            maiorValor = totalCasa;
+                            casaMaisPopular = nome;
+                        }
                     });
+
+                    //Atualização da KPI
+                    document.getElementById('kpi-container').style.display = 'block';
+                    document.getElementById('kpi-totalBruxos').innerHTML = `Total de bruxos na escola: <strong>${total}</strong>`;
+                    document.getElementById('kpi-casaPopular').innerHTML = `Casa mais popular: <strong>${casaMaisPopular}</strong>`;
+                    document.getElementById('kpi-totalCasaPopular').innerHTML = `Quantidade de bruxos na casa mais popular: <strong>${maiorValor}</strong>`;
 
                     atualizarGraficoBarras(porcentagens);
                 })

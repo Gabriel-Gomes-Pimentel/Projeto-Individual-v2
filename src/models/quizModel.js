@@ -33,6 +33,14 @@ function cadastrar(idUserServer, idCasaServer) {
     return database.executar(instrucaoSql);
 }
 
+function totalAlunos() {
+    var instrucaoSql = `SELECT COUNT(*) AS total_bruxos
+FROM usuarios
+WHERE fk_selecao_casa IS NOT NULL; `;
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
 function distribuicaoPartidaPorCasa() {
     var instrucaoSql = `Select c.nome AS casa, COUNT(p.id) AS total_partidas FROM selecao_casa c LEFT JOIN partida p ON p.fk_idCasa = c.id GROUP BY c.id`;
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
@@ -84,5 +92,6 @@ module.exports = {
     cadastrar,
     interesseAreaMagica,
     distribuicaoPartidaPorCasa,
-    atualizarCasaUsuario
+    atualizarCasaUsuario,
+    totalAlunos
 };
