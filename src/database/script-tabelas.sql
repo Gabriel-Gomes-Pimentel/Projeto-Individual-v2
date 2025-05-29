@@ -25,9 +25,15 @@ INSERT INTO selecao_casa (id, nome) VALUES
 =========================================================================================================
 */
 CREATE TABLE area_magica (
-    id INT PRIMARY KEY AUTO_INCREMENT,
+    id INT PRIMARY KEY,
     nome VARCHAR(45) NOT NULL
 );
+
+INSERT INTO area_magica (id, nome) VALUES 
+(1,'Herbologia'),
+(2,'Magizologia'),
+(3,'Feitiços'),
+(4,'Poções');
 
 /* ============================== TABELA USUARIOS ========================================================
 -- Finalidade: Representa os bruxos que jogam e fazem o quiz e interagem com o site.
@@ -40,33 +46,33 @@ CREATE TABLE usuarios (
     nome VARCHAR(45) NOT NULL,
 	email VARCHAR(45) NOT NULL,
     senha VARCHAR(45) NOT NULL,
-    fk_selecao_casa INT,
-    fk_area_magica INT,
+    id_selecao_casa INT,
+    id_area_magica INT,
     autenticado TINYINT(1) DEFAULT 0,
-    CONSTRAINT fkUsuariosSelecaoCasa FOREIGN KEY (fk_selecao_casa)
+    CONSTRAINT fkUsuariosSelecaoCasa FOREIGN KEY (id_selecao_casa)
         REFERENCES selecao_casa (id),
-    CONSTRAINT fkUsuariosAreaMagica FOREIGN KEY (fk_area_magica)
+    CONSTRAINT fkUsuariosAreaMagica FOREIGN KEY (id_area_magica)
         REFERENCES area_magica (id)
 );
 
-/* ============================== TABELA PARTIDA ==========================================================
+/* ============================== TABELA RESULTADO ==========================================================
 -- Finalidade: Registra cada vez que um usuário joga o jogo.
 -- Cada partida guarda a data/hora e a pontuação obtida.
 -- Um usuário pode jogar várias vezes (N:1 com usuarios).
 =========================================================================================================
 */
-CREATE TABLE partida (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    fk_usuario INT NOT NULL,
-    data_partida DATETIME DEFAULT CURRENT_TIMESTAMP,
+CREATE TABLE RESULTADO (
+    id INT AUTO_INCREMENT,
+    id_usuario INT,
     fk_idCasa INT,
-    CONSTRAINT fkPartidaUsuario FOREIGN KEY (fk_usuario)
+    CONSTRAINT pkCompostaUsuario PRIMARY KEY (id, id_usuario),
+    CONSTRAINT fkResultadoUsuario FOREIGN KEY (id_usuario)
         REFERENCES usuarios (id),
-	CONSTRAINT fkPartidaCasa FOREIGN KEY (fk_idCasa)
+	CONSTRAINT fkResultadoCasa FOREIGN KEY (fk_idCasa)
 		REFERENCES selecao_casa(id)
 );
 
-select * from partida;
+
 
 /*======================================QUERIES===========================================================
 1- Porcentagem de usuários por casa
@@ -81,14 +87,14 @@ SELECT
     COUNT(u.id) AS total_usuarios,
     ROUND(100 * COUNT(u.id) / (SELECT COUNT(*) FROM usuarios), 2) AS porcentagem
 FROM selecao_casa c
-LEFT JOIN usuarios u ON u.fk_selecao_casa = c.id
+LEFT JOIN usuarios u ON u.id_selecao_casa = c.id
 GROUP BY c.id;
 
 -- KPI 
 -- SELECT
 -- 	COUNT(*) AS total_bruxos
 -- FROM usuarios
--- WHERE fk_selecao_casa IS NOT NULL;    
+-- WHERE id_selecao_casa IS NOT NULL;    
 
 -- 2
 SELECT 
@@ -96,8 +102,8 @@ SELECT
     a.nome AS areaMagica,
     COUNT(u.id) AS total_interesse
 FROM usuarios u
-JOIN selecao_casa c ON u.fk_selecao_casa = c.id
-JOIN area_magica a ON u.fk_area_magica = a.id
+JOIN selecao_casa c ON u.id_selecao_casa = c.id
+JOIN area_magica a ON u.id_area_magica = a.id
 GROUP BY c.nome, a.nome;
 
 
@@ -106,8 +112,8 @@ SELECT
     s.nome AS casa,
     MAX(p.pontos) AS maior_pontuacao
 FROM partida p
-JOIN usuarios u ON p.fk_usuario = u.id
-JOIN selecao_casa s ON u.fk_selecao_casa = s.id
+JOIN usuarios u ON p.id_usuario = u.id
+JOIN selecao_casa s ON u.id_selecao_casa = s.id
 GROUP BY s.id
 ORDER BY maior_pontuacao DESC;
 

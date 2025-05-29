@@ -269,7 +269,7 @@
             fetch("/quiz/distribuicao", { cache: 'no-store' })
                 .then(response => response.json())
                 .then(dados => {
-                    const total = dados.reduce((acc, item) => acc + item.total_partidas, 0);
+                    const total = dados.reduce((acc, item) => acc + item.total_resultado, 0);
                     const porcentagens = {
                         Grifinoria: 0,
                         Corvinal: 0,
@@ -282,8 +282,8 @@
 
                     dados.forEach(item => {
                         let nome = item.casa;
-                        let totalCasa = item.total_partidas;
-                        let percent = ((item.total_partidas / total) * 100).toFixed(2);
+                        let totalCasa = item.total_resultado;
+                        let percent = ((item.total_resultado / total) * 100).toFixed(2);
 
                         if (nome == "Grifinoria") porcentagens.Grifinoria = percent;
                         else if (nome == "Corvinal") porcentagens.Corvinal = percent;
