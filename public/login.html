@@ -101,14 +101,20 @@
             }).then(function (resposta) {
                 if (resposta.ok) {
                     resposta.json().then(json => {
-                        console.log(json);
+                            console.log(json);
                         console.log(JSON.stringify(json));
                         sessionStorage.EMAIL_USUARIO = json.email;
                         sessionStorage.NOME_USUARIO = json.nome;
                         sessionStorage.ID_USUARIO = json.id;
-
+                        sessionStorage.NOME_CASA_USUARIO = json.nomeCasa;
+                        
                         setTimeout(function () {
+
+                          if(json.nomeCasa == 'Corvinal'){
+                                window.location = "./index.html";
+                          }else{
                             window.location = "./quiz.html";
+                          }
                         }, 1000); // apenas para exibir o loading
 
                     });

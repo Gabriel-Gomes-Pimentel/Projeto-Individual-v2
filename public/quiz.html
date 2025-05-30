@@ -165,11 +165,17 @@
             }
         }
 
+        let areaMagicaFavorita = '';
+
         function proximaPergunta() {
             const letraSelecionada = letrasAtuais[opcoesAtual];
             const casa = perguntas[indicePerguntaAtual].respostas[letraSelecionada];
 
             pontoCasas[casa]++;
+
+            if (indicePerguntaAtual == 0) {
+                areaMagicaFavorita = perguntas[indicePerguntaAtual].opcoes[letraSelecionada].texto;
+            }
 
             indicePerguntaAtual++
             if (indicePerguntaAtual < perguntas.length) {
@@ -182,7 +188,10 @@
         }
 
         // Qual casa o usuario foi selecionado
-        var idCasa = 0;
+        let idCasa = 0;
+
+        // Qual é a área mágica favorita do usuário
+        let idAreaMagica = 0;
 
         function mostrarResultado() {
             document.getElementById('quiz').style.display = 'none';
@@ -225,6 +234,17 @@
                 idCasa = 4;
             }
 
+            //DEFINE O ID DA SUA ÁREA MÁGICA FAVORITA CORRESPONDETE O RESULTADO DO QUIZ
+            if (areaMagicaFavorita == 'Herbologia') {
+                idAreaMagica = 1;
+            } else if (areaMagicaFavorita == 'Magizologia') {
+                idAreaMagica = 2;
+            } else if (areaMagicaFavorita == 'Feitiços') {
+                idAreaMagica = 3;
+            } else if (areaMagicaFavorita == 'Poções') {
+                idAreaMagica = 4;
+            }
+
             document.getElementById('nome-casa').innerHTML = casaSelecionada;
             document.getElementById('mensagem-resultado').innerHTML = `Você foi selecionado para a casa <br><br>`;
 
@@ -236,6 +256,7 @@
             const dados = {
                 idUserServer: sessionStorage.ID_USUARIO,
                 idCasaServer: idCasa,
+                idAreaMagicaServer: idAreaMagica,
             }
             fetch("/quiz/cadastrar", {
                 method: "POST",

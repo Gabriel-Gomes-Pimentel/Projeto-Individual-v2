@@ -65,11 +65,14 @@ CREATE TABLE RESULTADO (
     id INT AUTO_INCREMENT,
     id_usuario INT,
     fk_idCasa INT,
+    fk_idAreaMagica INT,
     CONSTRAINT pkCompostaUsuario PRIMARY KEY (id, id_usuario),
     CONSTRAINT fkResultadoUsuario FOREIGN KEY (id_usuario)
         REFERENCES usuarios (id),
 	CONSTRAINT fkResultadoCasa FOREIGN KEY (fk_idCasa)
-		REFERENCES selecao_casa(id)
+		REFERENCES selecao_casa(id),
+        CONSTRAINT fkResultadoAreaMagica FOREIGN KEY (fk_idAreaMagica)
+		REFERENCES area_magica(id)
 );
 
 
@@ -83,12 +86,11 @@ CREATE TABLE RESULTADO (
 */
 -- 1
 SELECT 
-    c.nome AS casa,
-    COUNT(u.id) AS total_usuarios,
-    ROUND(100 * COUNT(u.id) / (SELECT COUNT(*) FROM usuarios), 2) AS porcentagem
-FROM selecao_casa c
-LEFT JOIN usuarios u ON u.id_selecao_casa = c.id
-GROUP BY c.id;
+c.nome AS casa,
+ COUNT(r.id) AS total_resultado 
+ FROM selecao_casa c 
+ LEFT JOIN resultado r ON r.fk_idCasa = c.id 
+ GROUP BY c.id;
 
 -- KPI 
 -- SELECT
@@ -117,4 +119,9 @@ JOIN selecao_casa s ON u.id_selecao_casa = s.id
 GROUP BY s.id
 ORDER BY maior_pontuacao DESC;
 
-select * from usuarios;
+select * FROM usuarios;
+
+  SELECT u.id, u.nome, u.email, u.id_selecao_casa,sa.nome as nomeCasa
+        FROM usuarios as u
+			left JOIN selecao_casa as sa
+        ON sa.id = u.id_selecao_casa;

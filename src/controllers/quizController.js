@@ -1,26 +1,9 @@
 var quizModel = require("../models/quizModel");
 
-function selecionar(req, res) {
-    quizModel.selecionar()
-        .then((resultado) => {
-            if ((resultado.length > 0)) {
-                console.log(`\nResultados encontrados: ${resultado.length}`);
-                console.log(`Resultados: ${JSON.stringify(resultado)}`); // transforma JSON em String
-
-                res.status(200).json(resultado);
-            } else {
-                res.status(204).send("Nenhum resultado encontrado");
-            }
-        })
-        .catch((erro) => {
-            console.log("\nHouve um erro ao buscar os dados! Erro: ", erro.sqlMessage);
-            res.status(500).json(erro.sqlMessage);
-        });
-}
-
 function cadastrar(req, res) {
     var idCasaServer = req.body.idCasaServer;
     var idUserServer = req.body.idUserServer;
+    var idAreaMagicaServer = req.body.idAreaMagicaServer;
 
     if (!idCasaServer) {
         res.status(400).send("Sua casa está undefined")
@@ -32,41 +15,36 @@ function cadastrar(req, res) {
         return;
     }
 
-    quizModel.atualizarCasaUsuario(idUserServer, idCasaServer)
+    if (!idAreaMagicaServer) {
+        res.status(400).send("Sua casa está undefined")
+        return;
+    }
+
+
+    // UTILIZADO PARA ATUALIZAR OS DADOS DOS USUÁRIOS DA ÁREA MÁGICA E A CASA SELECIONADA AO MESMO TEMPO
+    Promise.all([
+        quizModel.atualizarAreaMagicaUsuario(idUserServer, idAreaMagicaServer),
+        quizModel.atualizarCasaUsuario(idUserServer, idCasaServer)
+    ])
         .then(() => {
 
-            return quizModel.cadastrar(idUserServer, idCasaServer);
+            return quizModel.inseriResultado(idUserServer, idCasaServer, idAreaMagicaServer);
         })
         .then(function (resposta) {
             res.status(201).json({
-                mensagem: "Pontuacao enviada ao banco de dados com sucesso!",
+                mensagem: "Resposta enviada ao banco de dados com sucesso!",
                 resultado: resposta
             });
 
         })
         .catch(function (erro) {
-            console.error("Erro ao cadastrar pontuacão:", erro.sqlMessage);
+            console.error("Erro ao cadastrar a resposta:", erro.sqlMessage);
             res.status(500).json({
-                erro: "Erro ao cadastrar pontuação",
+                erro: "Erro ao cadastrar a resposta",
                 detalhe: erro.sqlMessage
             });
         });
 }
-
-// function totalBruxos(req, res) {
-//     quizModel.totalAlunos()
-//         .then((resultado) => {
-//             if (resultado.length > 0) {
-//                 res.status(200).json(resultado[0]);
-//             } else {
-//                 res.status(204).send("Nenhum dado encontrado");
-//             }
-//         })
-//         .catch((erro) => {
-//             console.log("Erro ao buscar total de alunos: ", erro.sqlMessage);
-//             res.status(500).json(erro.sqlMessage);
-//         })
-// }
 
 function distribuicao(req, res) {
     quizModel.distribuicaoResultadoPorCasa()
@@ -98,14 +76,8 @@ function interesses(req, res) {
         })
 }
 
-// function ranking (req,res) {
-//     quizModel.rankingCasas
-// }
-
 module.exports = {
-    selecionar,
     interesses,
     cadastrar,
     distribuicao
-    // totalBruxos
 }
