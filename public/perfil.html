@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+    <link rel="stylesheet" href="./css/perfil.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <header id="menu-lateral">
+        <div class="logo">
+            <a href="../index.html">
+                <img src="./assets/icon/logo.png">
+            </a>
+            <nav>
+                <h3 class="hello">Olá, <span id="b_usuario">usuário</span>!</h3>
+                <ul>
+                    <li id="menu_quiz"></li>
+                    <li id="dashboard">
+                        <span class="material-symbols-outlined">
+                            monitoring
+                        </span>
+                        <a href="../dashboard/dashboardHarryPotter.html">Dashboard</a>
+                    </li>
+                    <li class="atual" id="distribuicaoCasas">
+                        <span class="material-symbols-outlined">
+                            person
+                        </span>
+                        <a href="./perfil.html">Perfil</a>
+                    </li>
+                    </li>
+                    <li id="sair">
+                        <span class="material-symbols-outlined">
+                            logout
+                        </span>
+                        <a onclick="limparSessao()">Sair</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="conteudo"></main>
+</body>
+
+<script>
+
+    idCasa = sessionStorage.ID_CASA;
+    if (idCasa) {
+        menu_quiz.innerHTML = ``;
+    } else {
+        menu_quiz.innerHTML = `
+                             <span class="material-symbols-outlined">
+                            quiz
+                        </span>
+                        <a href="../quiz.html">Quiz</a>
+                        `;
+    }
+
+    b_usuario.innerHTML = sessionStorage.NOME_USUARIO;
+
+    function verificarCasa() {
+        fetch("/dash/verificarCasa", { cache: 'no-store' })
+            .then(response => response.json())
+            .then(dados => {
+
+
+                console.log(idCasa)
+                dados.forEach(item => {
+                    let id = item.id_selecao_casa;
+                    var backgroundCasa = document.querySelector(".conteudo")
+
+                    if (id == 1) {
+                        backgroundCasa.style.backgroundColor = "red";
+                    } else if (id == 2) {
+                        backgroundCasa.style.backgroundColor = "red";
+                    } else if (id == 2) {
+                        backgroundCasa.style.backgroundColor = "";
+                    } else if (id == 2) {
+                        backgroundCasa.style.backgroundColor = "red";
+                    }
+                });
+            })
+            .catch(erro => {
+                console.error("Erro ao obter dados do perfil:", erro);
+            });
+    }
+</script>

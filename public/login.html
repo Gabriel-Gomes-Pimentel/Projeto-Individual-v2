@@ -47,8 +47,8 @@
                     </span>
                 </div>
                 <button type="button" onclick="validarLogin(event)">Entrar</button>
+            </section>
         </form>
-    </section>
 
     <footer>
         <p>© 2025 - Todos os feitiços reservados por Gabriel Gomes Pimentel<br>
@@ -102,11 +102,13 @@
                 if (resposta.ok) {
                     resposta.json().then(json => {
                         console.log(json);
+                        console.log(json.idCasa)
                         console.log(JSON.stringify(json));
                         sessionStorage.EMAIL_USUARIO = json.email;
                         sessionStorage.NOME_USUARIO = json.nome;
                         sessionStorage.ID_USUARIO = json.id;
                         sessionStorage.NOME_CASA_USUARIO = json.nomeCasa;
+                        sessionStorage.ID_CASA = json.idCasa;
 
                         setTimeout(function () {
 

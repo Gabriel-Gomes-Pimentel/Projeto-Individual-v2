@@ -60,11 +60,10 @@
                     <span id="span_tamanho">Pelo menos 8 caracteres</span>
                 </div>
             </div>
-            <button type="submit">Registrar-se</button><br><br>
+            <button type="submit" onclick="abrirModal()">Registrar-se</button><br><br>
             <hr class="linha-personalizada">
             <span class="text-pergunta"> Já fez o cadastro?</span>
             <a class="link-login" href="login.html">Entrar</a>
-        </form>
     </section>
 
     <footer>
@@ -72,8 +71,9 @@
             Inspirado no site oficial <br><a class="link-inspiracao" href="https://www.harrypotter.com/"
                 target="_blank">https://www.harrypotter.com/</a></p>
     </footer>
+    </form>
 
-    <div id="modal_container">
+    <!-- <div id="modal_container">
         <div class="modal-container show">
             <div class="modal-overlay" onclick="fecharModal()"></div>
             <div class="modal">
@@ -84,7 +84,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 
     <script>
         function validarNome() {
@@ -278,12 +278,26 @@
             }
         }
 
-        // const luz = document.querySelector('.luz');
+        function fecharModal() {
+            modal_container.innerHTML = `
+        <div class="modal-container">
+      <div class="modal-overlay" onclick="fecharModal()"></div>
+    <div class="modal">
+        <h1>Resultados</h1>
+        <p id="p_resultado"></p>
+        <div class="boxButton">
+            <button class="btnCalcular " onclick="fecharModal()">Fechar</button>
+        </div>
+    </div>
+</div>
+    `
+        }
 
-        // window.addEventListener('mousemove', (e) => {
-        //     luz.style.setProperty('--x', `${e.clientX}px`);
-        //     luz.style.setProperty('--y', `${e.clientY}px`);
-        // })
+        // function abrirModal() {
+        //     modal_container.style.display = 'block';
+        // }
+
+
 
     </script>
 
