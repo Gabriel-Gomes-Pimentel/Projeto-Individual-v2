@@ -271,3 +271,12 @@ footer p {
     font-size: 14px;
     width: 100%;
 }
+
+.link-inspiracao {
+     display: flex;
+    align-items: center;
+     justify-content: space-around;
+     font-size: 12px;
+     text-decoration: none;
+     color:#ffd700;
+}

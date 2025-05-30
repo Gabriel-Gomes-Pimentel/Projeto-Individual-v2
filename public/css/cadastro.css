@@ -147,6 +147,31 @@ button[type="submit"]:hover {
     background-color: #e6c200;
 }
 
+.linha-personalizada {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.text-pergunta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Harry Beast';
+    font-size: 55px;
+    color: #fff;
+}
+
+ .link-login {
+    display: flex;
+    align-items: center;
+     justify-content: space-around;
+     font-size: 32px;
+     text-decoration: none;
+     color:#ffd700;
+}
+
 footer {
     margin-top: 100px;
     width: 100%;
@@ -168,4 +193,13 @@ footer p {
     font-size: 13px;
     text-align: center;
     padding-bottom: 0 20px;
+}
+
+.link-inspiracao {
+     display: flex;
+    align-items: center;
+     justify-content: space-around;
+     font-size: 12px;
+     text-decoration: none;
+     color:#ffd700;
 }

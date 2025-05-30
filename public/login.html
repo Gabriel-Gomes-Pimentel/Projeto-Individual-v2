@@ -46,13 +46,13 @@
                         </svg>
                     </span>
                 </div>
-                <button type="button" onclick="validarLogin(event)">Log in</button>
+                <button type="button" onclick="validarLogin(event)">Entrar</button>
         </form>
     </section>
 
     <footer>
         <p>© 2025 - Todos os feitiços reservados por Gabriel Gomes Pimentel<br>
-            Inspirado no site oficial <br><a href="https://www.harrypotter.com/"
+            Inspirado no site oficial <br><a class="link-inspiracao" href="https://www.harrypotter.com/"
                 target="_blank">https://www.harrypotter.com/</a></p>
     </footer>
 
@@ -101,20 +101,21 @@
             }).then(function (resposta) {
                 if (resposta.ok) {
                     resposta.json().then(json => {
-                            console.log(json);
+                        console.log(json);
                         console.log(JSON.stringify(json));
                         sessionStorage.EMAIL_USUARIO = json.email;
                         sessionStorage.NOME_USUARIO = json.nome;
                         sessionStorage.ID_USUARIO = json.id;
                         sessionStorage.NOME_CASA_USUARIO = json.nomeCasa;
-                        
+
                         setTimeout(function () {
 
-                          if(json.nomeCasa == 'Corvinal'){
+                            if (json.nomeCasa == 'Corvinal') {
                                 window.location = "./index.html";
-                          }else{
-                            window.location = "./quiz.html";
-                          }
+                            } else {
+                                window.location = "./dashboard/dashboardHarryPotter.html";
+                                // ./dashboard/dashboardHarryPotter.html
+                            }
                         }, 1000); // apenas para exibir o loading
 
                     });
