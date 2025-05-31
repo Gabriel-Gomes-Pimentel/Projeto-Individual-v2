@@ -47,8 +47,8 @@
                     </span>
                 </div>
                 <button type="button" onclick="validarLogin(event)">Entrar</button>
-            </section>
-        </form>
+    </section>
+    </form>
 
     <footer>
         <p>© 2025 - Todos os feitiços reservados por Gabriel Gomes Pimentel<br>
@@ -112,13 +112,10 @@
 
                         setTimeout(function () {
 
-                            if (json.nomeCasa == 'Corvinal') {
-                                window.location = "./index.html";
-                            } else {
-                                window.location = "./dashboard/dashboardHarryPotter.html";
-                                // ./dashboard/dashboardHarryPotter.html
-                            }
-                        }, 1000); // apenas para exibir o loading
+                            window.location = "./dashboard/dashboardHarryPotter.html";
+                            // ./dashboard/dashboardHarryPotter.html
+                        }
+                            , 1000); // apenas para exibir o loading
 
                     });
                 } else {

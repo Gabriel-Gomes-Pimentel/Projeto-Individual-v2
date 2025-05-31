@@ -18,14 +18,14 @@
             <nav>
                 <h3 class="hello">Olá, <span id="b_usuario">usuário</span>!</h3>
                 <ul>
-                    <li id="menu_quiz"></li>
+                    <li id="menu-quiz"></li>
                     <li id="dashboard">
                         <span class="material-symbols-outlined">
                             monitoring
                         </span>
                         <a href="../dashboard/dashboardHarryPotter.html">Dashboard</a>
                     </li>
-                    <li class="atual" id="distribuicaoCasas">
+                    <li class="atual" id="perfil">
                         <span class="material-symbols-outlined">
                             person
                         </span>
@@ -48,16 +48,18 @@
 
 <script>
 
-    idCasa = sessionStorage.ID_CASA;
-    if (idCasa) {
-        menu_quiz.innerHTML = ``;
+    var idCasa = sessionStorage.ID_CASA;
+    var quiz = document.getElementById('menu-quiz');
+
+    if (idCasa == null || idCasa == "null" || idCasa == undefined) {
+        quiz.innerHTML = `
+        <span class="material-symbols-outlined">
+            quiz
+            </span>
+            <a href="../quiz.html">Quiz</a>
+            `;
     } else {
-        menu_quiz.innerHTML = `
-                             <span class="material-symbols-outlined">
-                            quiz
-                        </span>
-                        <a href="../quiz.html">Quiz</a>
-                        `;
+        quiz.innerHTML = ``;
     }
 
     b_usuario.innerHTML = sessionStorage.NOME_USUARIO;

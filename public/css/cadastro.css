@@ -210,7 +210,8 @@ button[type="submit"]:hover {
     display: flex;
     align-items: center;
      justify-content: space-around;
-     font-size: 32px;
+     font-family: 'Harry Beast';
+     font-size: 50px;
      text-decoration: none;
      color:#ffd700;
 }

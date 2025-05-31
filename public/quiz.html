@@ -6,12 +6,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quiz</title>
     <link rel="stylesheet" href="./css/quiz.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
     <link href="https://fonts.cdnfonts.com/css/harry-potter" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
-    <div class="container-quiz">
+    <header id="menu-lateral">
+        <div class="logo">
+            <a href="../index.html">
+                <img src="../assets/icon/logo.png">
+            </a>
+            <nav>
+                <h3 class="hello">Olá, <span id="b_usuario">usuário</span>!</h3>
+                <ul>
+                    <li class="atual" id="menu-quiz">
+                        <span class="material-symbols-outlined">
+                            quiz
+                        </span>
+                        <a href="../quiz.html">Quiz</a>
+                    </li>
+                    <li id="dashboard">
+                        <span class="material-symbols-outlined">
+                            monitoring
+                        </span>
+                        <a href="../dashboard/dashboardHarryPotter.html">Dashboard</a>
+                    </li>
+                    <li id="perfil">
+                        <span class="material-symbols-outlined">
+                            person
+                        </span>
+                        <a href="../perfil.html">Perfil</a>
+                    </li>
+                    <li id="sair">
+                        <span class="material-symbols-outlined">
+                            logout
+                        </span>
+                        <a onclick="limparSessao()">Sair</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <div id="conteudo" class="container-quiz">
         <button id="botao-iniciar-quiz" class="botao-iniciar" onclick="iniciarQuiz()">Descubra a sua Casa</button>
 
         <div id="quiz" class="quiz-container" style="display: none;">
@@ -21,12 +57,19 @@
             </div>
 
             <div id="carrossel-container" style="display: none;">
-                <button onclick="voltarOpcao()">⬅️</button>
+                <button onclick="voltarOpcao()"><svg xmlns="http://www.w3.org/2000/svg" height="24px"
+                        viewBox="0 -960 960 960" width="24px" fill="#fff">
+                        <path d="M560-240 320-480l240-240 56 56-184 184 184 184-56 56Z" />
+                    </svg></button>
                 <label id="opcao-atual" class="carrosel-item" data-valor="A">
                     <img id="imagem-opcao" src="" style="max-width: 300px;"><br>
                     <span id="texto-opcao" class="texto-opcao"></span>
                 </label><br>
-                <button onclick="avancarOpcao()">➡️</button>
+                <button onclick="avancarOpcao()"><svg xmlns="http://www.w3.org/2000/svg" height="24px"
+                        viewBox="0 -960 960 960" width="24px" fill="#fff">
+                        <path d="M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z" />
+                    </svg>
+                </button>
             </div>
 
             <button id="botao-proxima" class="botao-proxima" onclick="proximaPergunta()">Pergunta Seguinte</button>
@@ -35,19 +78,11 @@
             <h2>Resultado Final</h2>
             <p id="mensagem-resultado" class="mensagem-resultado"></p>
             <p><strong><span id="nome-casa" class="nome-casa"></span> </strong></p>
+            <div class="exit" id="exit">
+                <img src="./assets/icon/Plataforma934.png" alt="Plataforma 9 3/4">
+            </div>
         </div>
     </div>
-
-    <div id="grafico-container" class="grafico-container" style="width: 600px; margin: 40px auto; display:none;">
-        <h3 class="grafico-titulo">Distribuição por Casas em %</h3>
-        <div id="kpi-container" style="text-align: center; margin: 30px auto; display: none;">
-            <p id="kpi-totalBruxos" style="font-size: 18px;"></p>
-            <p id="kpi-casaPopular" style="font-size: 18px;"></p>
-            <p id="kpi-totalCasaPopular" style="font-size: 18px;"></p>
-        </div>
-        <canvas id="grafico-casas" class="grafico-canvas" width="600" height="400"></canvas>
-    </div>
-
     <script>
         const perguntas = [{
 
@@ -183,7 +218,6 @@
             } else {
                 document.getElementById('carrossel-container').style.display = 'none';
                 mostrarResultado();
-                atualizarGrafico();
             }
         }
 
@@ -247,7 +281,6 @@
 
             document.getElementById('nome-casa').innerHTML = casaSelecionada;
             document.getElementById('mensagem-resultado').innerHTML = `Você foi selecionado para a casa <br><br>`;
-
             cadastrar();
         }
 
@@ -273,11 +306,6 @@
                 })
                 .then(function (dadosResposta) {
                     console.log('Pontuação cadastrada com sucesso', dadosResposta);
-
-                    atualizarGrafico();
-                    setTimeout(() => {
-                        document.getElementById('grafico-container').style.display = 'block';
-                    }, 300);
                 })
                 .catch((error) => {
                     console.error("Erro:", error);
@@ -286,100 +314,31 @@
 
         }
 
-        function atualizarGrafico() {
-            fetch("/quiz/distribuicao", { cache: 'no-store' })
-                .then(response => response.json())
-                .then(dados => {
-                    const total = dados.reduce((acc, item) => acc + item.total_resultado, 0);
-                    const porcentagens = {
-                        Grifinoria: 0,
-                        Corvinal: 0,
-                        LufaLufa: 0,
-                        Sonserina: 0
-                    };
+        //CRIAR FUNÇÃO PARA NÃO APARECER O ICONE DO QUIZ DEPOIS QUE ELE FEZ O QUIZ E NÃO APARECER O ICONE DO PERFIL ANTES DELE FAZER O QUIZ
+        function exibirMenuLateral() {
+            var idCasa = sessionStorage.ID_CASA;
+            var quiz = document.getElementById('menu-quiz');
+            var perfil = document.getElementById('perfil');
 
-                    let casaMaisPopular = '';
-                    let maiorValor = 0;
+            if (idCasa == null || idCasa == "null" || idCasa == undefined) {
+                quiz.innerHTML = `
+        <span class="material-symbols-outlined">
+            quiz
+            </span>
+            <a href="../quiz.html">Quiz</a>
+            `;
 
-                    dados.forEach(item => {
-                        let nome = item.casa;
-                        let totalCasa = item.total_resultado;
-                        let percent = ((item.total_resultado / total) * 100).toFixed(2);
-
-                        if (nome == "Grifinoria") porcentagens.Grifinoria = percent;
-                        else if (nome == "Corvinal") porcentagens.Corvinal = percent;
-                        else if (nome == "LufaLufa") porcentagens.LufaLufa = percent;
-                        else if (nome == "Sonserina") porcentagens.Sonserina = percent;
-
-                        if (totalCasa > maiorValor) {
-                            maiorValor = totalCasa;
-                            casaMaisPopular = nome;
-                        }
-                    });
-
-                    //Atualização da KPI
-                    document.getElementById('kpi-container').style.display = 'block';
-                    document.getElementById('kpi-totalBruxos').innerHTML = `Total de bruxos na escola: <strong>${total}</strong>`;
-                    document.getElementById('kpi-casaPopular').innerHTML = `Casa mais popular: <strong>${casaMaisPopular}</strong>`;
-                    document.getElementById('kpi-totalCasaPopular').innerHTML = `Quantidade de bruxos na casa mais popular: <strong>${maiorValor}</strong>`;
-
-                    atualizarGraficoBarras(porcentagens);
-                })
-                .catch(erro => {
-                    console.error("Erro ao obter dados do gráfico:", erro);
-                });
-        }
-
-        function agendarAtualizacaoGrafico() {
-            if (proximaAtualizacao) {
-                clearTimeout(proximaAtualizacao);
+                perfil.innerHTML = ``;
+            } else {
+                quiz.innerHTML = ``;
+                perfil.innerHTML = `  <span class="material-symbols-outlined">
+                                person
+                            </span>
+                            <a href="../perfil.html">Perfil</a>`;
             }
-
-            proximaAtualizacao = setTimeout(() => {
-                atualizarGrafico()
-            }, 500)
         }
+        exibirMenuLateral();
 
-        let graficoCasas;
-
-        function atualizarGraficoBarras(porcentagens) {
-            const ctx = document.getElementById('grafico-casas').getContext('2d');
-
-            if (graficoCasas) {
-                graficoCasas.destroy();
-            }
-
-
-            graficoCasas = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: ['Grifinoria', 'Corvinal', 'LufaLufa', 'Sonserina'],
-                    datasets: [{
-                        label: "Porcentagem(%) de Pessoas por Casa",
-                        data: [
-                            porcentagens.Grifinoria,
-                            porcentagens.Corvinal,
-                            porcentagens.LufaLufa,
-                            porcentagens.Sonserina
-                        ],
-                        backgroundColor: ['rgba(255, 0, 0, 0.7)', 'rgba(0, 0, 255, 0.7)', 'rgba(255, 215, 0, 0.7)', 'rgba(0, 128, 0, 0.7)'],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                stepSize: 10,
-                                max: 100
-                            }
-                        }
-                    }
-                }
-            });
-
-        }
     </script>
 </body>
 

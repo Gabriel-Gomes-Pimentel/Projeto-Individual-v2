@@ -10,7 +10,7 @@ body {
     font-family: 'Harry Potter', sans-serif;
     height: 100vh;
     margin: 0;
-    margin-left: 0 !important;
+    margin-left: 0;
 }
 
 #menu-lateral {

@@ -30,7 +30,7 @@
                         </span>
                         <a href="../dashboard/dashboardHarryPotter.html">Dashboard</a>
                     </li>
-                    <li id="distribuicaoCasas">
+                    <li id="perfil">
                         <span class="material-symbols-outlined">
                             person
                         </span>
@@ -62,249 +62,251 @@
             <canvas id="grafico-areaMagica" class="grafico-canvas" width="600" height="400"></canvas>
         </div>
     </main>
-</body>
-
-</html>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-    b_usuario.innerHTML = sessionStorage.NOME_USUARIO;
 
 
-    //CRIAR FUNÇÃO PARA O DISPLAY SER NONE DEPOIS QUE ELE FEZ O QUIZ
-    var idCasa = sessionStorage.ID_CASA;
-    var quiz = document.getElementById('menu-quiz');
 
-    if (idCasa) {
-        quiz.innerHTML = ``;
-    } else {
-        quiz.innerHTML = `
-                             <span class="material-symbols-outlined">
-                            quiz
-                        </span>
-                        <a href="../quiz.html">Quiz</a>
-                        `;
-    }
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
 
-    function verificarCasa() {
-        fetch("/dash/verificarCasa", { cache: 'no-store' })
-            .then(response => response.json())
-            .then(dados => {
+        b_usuario.innerHTML = sessionStorage.NOME_USUARIO;
 
 
-                console.log(idCasa)
-                dados.forEach(item => {
-                    let id = item.id_selecao_casa;
-                });
-            })
-            .catch(erro => {
-                console.error("Erro ao obter dados do perfil:", erro);
-            });
-    }
+        //CRIAR FUNÇÃO PARA NÃO APARECER O ICONE DO QUIZ DEPOIS QUE ELE FEZ O QUIZ E NÃO APARECER O ICONE DO PERFIL ANTES DELE FAZER O QUIZ
+        function exibirMenuLateral() {
+            var idCasa = sessionStorage.ID_CASA;
+            var quiz = document.getElementById('menu-quiz');
+            var perfil = document.getElementById('perfil');
+
+            if (idCasa == null || idCasa == "null" || idCasa == undefined) {
+                quiz.innerHTML = `
+        <span class="material-symbols-outlined">
+            quiz
+            </span>
+            <a href="../quiz.html">Quiz</a>
+            `;
+
+                perfil.innerHTML = ``;
+            } else {
+                quiz.innerHTML = ``;
+                perfil.innerHTML = `  <span class="material-symbols-outlined">
+                                person
+                            </span>
+                            <a href="../perfil.html">Perfil</a>`;
+            }
+        }
+        exibirMenuLateral();
 
 
-    function limparSessao() {
-        sessionStorage.clear();
-        window.location = "../login.html"
-    }
-
-    let graficosCasas;
-
-    function agendarAtualizacaoGrafico() {
-        if (proximaAtualizacao) {
-            clearTimeout(proximaAtualizacao);
+        function limparSessao() {
+            sessionStorage.clear();
+            window.location = "../login.html"
         }
 
-        proximaAtualizacao = setTimeout(() => {
-            atualizarGrafico()
-        }, 500)
-    }
+        let graficoCasas;
 
-    let graficoCasas;
+        function atualizarGraficoBarras(porcentagens) {
+            const ctx = document.getElementById('grafico-casas').getContext('2d');
 
-    function atualizarGraficoBarras(porcentagens) {
-        const ctx = document.getElementById('grafico-casas').getContext('2d');
+            if (graficoCasas) {
+                graficoCasas.destroy();
+            }
 
-        if (graficoCasas) {
-            graficoCasas.destroy();
-        }
-
-
-        graficoCasas = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['Grifinoria', 'Corvinal', 'LufaLufa', 'Sonserina'],
-                datasets: [{
-                    label: "Porcentagem(%) de Pessoas por Casa",
-                    data: [
-                        porcentagens.Grifinoria,
-                        porcentagens.Corvinal,
-                        porcentagens.LufaLufa,
-                        porcentagens.Sonserina
-                    ],
-                    backgroundColor: ['rgba(255, 0, 0, 0.7)', 'rgba(0, 0, 255, 0.7)', 'rgba(255, 215, 0, 0.7)', 'rgba(0, 128, 0, 0.7)'],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            stepSize: 10,
-                            max: 100
+            graficoCasas = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Grifinoria', 'Corvinal', 'LufaLufa', 'Sonserina'],
+                    datasets: [{
+                        label: "Porcentagem(%) de Pessoas por Casa",
+                        data: [
+                            porcentagens.Grifinoria,
+                            porcentagens.Corvinal,
+                            porcentagens.LufaLufa,
+                            porcentagens.Sonserina
+                        ],
+                        backgroundColor: ['rgba(255, 0, 0, 0.7)', 'rgba(0, 0, 255, 0.7)', 'rgba(255, 215, 0, 0.7)', 'rgba(0, 128, 0, 0.7)'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 10,
+                                max: 100
+                            }
                         }
                     }
                 }
-            }
-        });
-
-    }
-
-    function atualizarGrafico() {
-        fetch("/quiz/distribuicao", { cache: 'no-store' })
-            .then(response => response.json())
-            .then(dados => {
-                const total = dados.reduce((acc, item) => acc + item.total_resultado, 0);
-                const porcentagens = {
-                    Grifinoria: 0,
-                    Corvinal: 0,
-                    LufaLufa: 0,
-                    Sonserina: 0
-                };
-
-                let casaMaisPopular = '';
-                let maiorValor = 0;
-
-                dados.forEach(item => {
-                    let nome = item.casa;
-                    let totalCasa = item.total_resultado;
-                    let percent = ((item.total_resultado / total) * 100).toFixed(2);
-
-                    if (nome == "Grifinoria") porcentagens.Grifinoria = percent;
-                    else if (nome == "Corvinal") porcentagens.Corvinal = percent;
-                    else if (nome == "LufaLufa") porcentagens.LufaLufa = percent;
-                    else if (nome == "Sonserina") porcentagens.Sonserina = percent;
-
-                    if (totalCasa > maiorValor) {
-                        maiorValor = totalCasa;
-                        casaMaisPopular = nome;
-                    }
-                });
-
-                //Atualização da KPI
-                document.getElementById('kpi-container').style.display = 'block';
-                document.getElementById('kpi-totalBruxos').innerHTML = `Total de bruxos na escola: <strong>${total}</strong>`;
-                document.getElementById('kpi-casaPopular').innerHTML = `Casa mais popular: <strong>${casaMaisPopular}</strong>`;
-                document.getElementById('kpi-totalCasaPopular').innerHTML = `Quantidade de bruxos na casa mais popular: <strong>${maiorValor}</strong>`;
-
-                atualizarGraficoBarras(porcentagens);
-            })
-            .catch(erro => {
-                console.error("Erro ao obter dados do gráfico:", erro);
             });
-    }
 
-    window.onload = atualizarGrafico;
+        }
+
+        function atualizarGrafico() {
+            fetch("/quiz/distribuicao", { cache: 'no-store' })
+                .then(response => response.json())
+                .then(dados => {
+                    const total = dados.reduce((acc, item) => acc + item.total_resultado, 0);
+                    const porcentagens = {
+                        Grifinoria: 0,
+                        Corvinal: 0,
+                        LufaLufa: 0,
+                        Sonserina: 0
+                    };
+
+                    let casaMaisPopular = '';
+                    let maiorValor = 0;
+
+                    dados.forEach(item => {
+                        let nome = item.casa;
+                        let totalCasa = item.total_resultado;
+                        let percent = ((item.total_resultado / total) * 100).toFixed(2);
+
+                        if (nome == "Grifinoria") porcentagens.Grifinoria = percent;
+                        else if (nome == "Corvinal") porcentagens.Corvinal = percent;
+                        else if (nome == "LufaLufa") porcentagens.LufaLufa = percent;
+                        else if (nome == "Sonserina") porcentagens.Sonserina = percent;
+
+                        if (totalCasa > maiorValor) {
+                            maiorValor = totalCasa;
+                            casaMaisPopular = nome;
+                        }
+                    });
+
+                    atualizarKPI(total, casaMaisPopular, maiorValor)
+                    atualizarGraficoBarras(porcentagens);
+                })
+                .catch(erro => {
+                    console.error("Erro ao obter dados do gráfico:", erro);
+                });
+        }
+
+        function atualizarKPI(total, casaMaisPopular, maiorValor) {
+
+            //Atualização da KPI
+            var container = document.getElementById('kpi-container')
+            container.style.display = 'block';
+
+            document.getElementById('kpi-totalBruxos').innerHTML = `Total de bruxos na escola: <strong>${total}</strong>`;
+            document.getElementById('kpi-casaPopular').innerHTML = `Casa mais popular: <strong>${casaMaisPopular}</strong>`;
+            document.getElementById('kpi-totalCasaPopular').innerHTML = `Quantidade de bruxos na casa mais popular: <strong>${maiorValor}</strong>`;
+
+        }
+
+
+        function agendarAtualizacaoGrafico() {
+            if (proximaAtualizacao) {
+                clearTimeout(proximaAtualizacao);
+            }
+
+            proximaAtualizacao = setTimeout(() => {
+                atualizarGrafico()
+            }, 500)
+        }
+
+        window.onload = atualizarGrafico;
 
 
 
-    //Segundo gráfico
+        //Segundo gráfico
 
-    // let graficoAreaMagica;
+        // let graficoAreaMagica;
 
-    //     function agendarAtualizacaoGrafico() {
-    //         if (proximaAtualizacao) {
-    //             clearTimeout(proximaAtualizacao);
-    //         }
+        //     function agendarAtualizacaoGrafico() {
+        //         if (proximaAtualizacao) {
+        //             clearTimeout(proximaAtualizacao);
+        //         }
 
-    //         proximaAtualizacao = setTimeout(() => {
-    //             atualizarGrafico()
-    //         }, 500)
-    //     }
+        //         proximaAtualizacao = setTimeout(() => {
+        //             atualizarGrafico()
+        //         }, 500)
+        //     }
 
-    //     function atualizarGraficoBarras(porcentagens) {
-    //         const ctx = document.getElementById('grafico-areaMagica').getContext('2d');
+        //     function atualizarGraficoBarras(porcentagens) {
+        //         const ctx = document.getElementById('grafico-areaMagica').getContext('2d');
 
-    //         if (graficoCasas) {
-    //             graficoCasas.destroy();
-    //         }
+        //         if (graficoCasas) {
+        //             graficoCasas.destroy();
+        //         }
 
 
-    //     graficoCasas = new Chart(ctx, {
-    //         type: 'radar',
-    //         data: {
-    //             labels: ['Grifinoria', 'Corvinal', 'LufaLufa', 'Sonserina'],
-    //             datasets: [{
-    //                 label: "Porcentagem(%) de Pessoas por Casa",
-    //                 data: [
-    //                     porcentagens.Grifinoria,
-    //                     porcentagens.Corvinal,
-    //                     porcentagens.LufaLufa,
-    //                     porcentagens.Sonserina
-    //                 ],
-    //                 backgroundColor: ['rgba(255, 0, 0, 0.7)', 'rgba(0, 0, 255, 0.7)', 'rgba(255, 215, 0, 0.7)', 'rgba(0, 128, 0, 0.7)'],
-    //                 borderWidth: 1
-    //             }]
-    //         },
-    //         options: {
-    //             scales: {
-    //                 y: {
-    //                     beginAtZero: true,
-    //                     ticks: {
-    //                         stepSize: 10,
-    //                         max: 100
-    //                     }
-    //                 }
-    //             }
-    //         }
-    //     });
+        //     graficoCasas = new Chart(ctx, {
+        //         type: 'radar',
+        //         data: {
+        //             labels: ['Grifinoria', 'Corvinal', 'LufaLufa', 'Sonserina'],
+        //             datasets: [{
+        //                 label: "Porcentagem(%) de Pessoas por Casa",
+        //                 data: [
+        //                     porcentagens.Grifinoria,
+        //                     porcentagens.Corvinal,
+        //                     porcentagens.LufaLufa,
+        //                     porcentagens.Sonserina
+        //                 ],
+        //                 backgroundColor: ['rgba(255, 0, 0, 0.7)', 'rgba(0, 0, 255, 0.7)', 'rgba(255, 215, 0, 0.7)', 'rgba(0, 128, 0, 0.7)'],
+        //                 borderWidth: 1
+        //             }]
+        //         },
+        //         options: {
+        //             scales: {
+        //                 y: {
+        //                     beginAtZero: true,
+        //                     ticks: {
+        //                         stepSize: 10,
+        //                         max: 100
+        //                     }
+        //                 }
+        //             }
+        //         }
+        //     });
 
-    // }
+        // }
 
-    // function atualizarGrafico() {
-    //     fetch("/quiz/distribuicao", { cache: 'no-store' })
-    //     .then(response => response.json())
-    //     .then(dados => {
-    //         const total = dados.reduce((acc, item) => acc + item.total_resultado, 0);
-    //         const porcentagens = {
-    //             Grifinoria: 0,
-    //             Corvinal: 0,
-    //             LufaLufa: 0,
-    //             Sonserina: 0
-    //         };
+        // function atualizarGrafico() {
+        //     fetch("/quiz/distribuicao", { cache: 'no-store' })
+        //     .then(response => response.json())
+        //     .then(dados => {
+        //         const total = dados.reduce((acc, item) => acc + item.total_resultado, 0);
+        //         const porcentagens = {
+        //             Grifinoria: 0,
+        //             Corvinal: 0,
+        //             LufaLufa: 0,
+        //             Sonserina: 0
+        //         };
 
-    //         let casaMaisPopular = '';
-    //         let maiorValor = 0;
+        //         let casaMaisPopular = '';
+        //         let maiorValor = 0;
 
-    //         dados.forEach(item => {
-    //             let nome = item.casa;
-    //             let totalCasa = item.total_resultado;
-    //             let percent = ((item.total_resultado / total) * 100).toFixed(2);
+        //         dados.forEach(item => {
+        //             let nome = item.casa;
+        //             let totalCasa = item.total_resultado;
+        //             let percent = ((item.total_resultado / total) * 100).toFixed(2);
 
-    //             if (nome == "Grifinoria") porcentagens.Grifinoria = percent;
-    //             else if (nome == "Corvinal") porcentagens.Corvinal = percent;
-    //             else if (nome == "LufaLufa") porcentagens.LufaLufa = percent;
-    //             else if (nome == "Sonserina") porcentagens.Sonserina = percent;
+        //             if (nome == "Grifinoria") porcentagens.Grifinoria = percent;
+        //             else if (nome == "Corvinal") porcentagens.Corvinal = percent;
+        //             else if (nome == "LufaLufa") porcentagens.LufaLufa = percent;
+        //             else if (nome == "Sonserina") porcentagens.Sonserina = percent;
 
-    //             if (totalCasa > maiorValor) {
-    //                 maiorValor = totalCasa;
-    //                 casaMaisPopular = nome;
-    //             }
-    //         });
+        //             if (totalCasa > maiorValor) {
+        //                 maiorValor = totalCasa;
+        //                 casaMaisPopular = nome;
+        //             }
+        //         });
 
-    //         //Atualização da KPI
-    //         document.getElementById('kpi-container').style.display = 'block';
-    //         document.getElementById('kpi-totalBruxos').innerHTML = `Total de bruxos na escola: <strong>${total}</strong>`;
-    //         document.getElementById('kpi-casaPopular').innerHTML = `Casa mais popular: <strong>${casaMaisPopular}</strong>`;
-    //         document.getElementById('kpi-totalCasaPopular').innerHTML = `Quantidade de bruxos na casa mais popular: <strong>${maiorValor}</strong>`;
+        //         //Atualização da KPI
+        //         document.getElementById('kpi-container').style.display = 'block';
+        //         document.getElementById('kpi-totalBruxos').innerHTML = `Total de bruxos na escola: <strong>${total}</strong>`;
+        //         document.getElementById('kpi-casaPopular').innerHTML = `Casa mais popular: <strong>${casaMaisPopular}</strong>`;
+        //         document.getElementById('kpi-totalCasaPopular').innerHTML = `Quantidade de bruxos na casa mais popular: <strong>${maiorValor}</strong>`;
 
-    //         atualizarGraficoBarras(porcentagens);
-    //     })
-    //     .catch(erro => {
-    //         console.error("Erro ao obter dados do gráfico:", erro);
-    //     });
-    // }
+        //         atualizarGraficoBarras(porcentagens);
+        //     })
+        //     .catch(erro => {
+        //         console.error("Erro ao obter dados do gráfico:", erro);
+        //     });
+        // }
 
-    // window.onload = atualizarGrafico;
-</script>
+        // window.onload = atualizarGrafico;
+    </script>
+</body>
+
+</html>
