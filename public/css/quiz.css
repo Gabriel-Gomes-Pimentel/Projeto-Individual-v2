@@ -44,7 +44,26 @@ body {
     height: auto
 }
 
+#perfil {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.svg-perfil svg {
+    height: 100px;
+    width: 100px;
+    background-color: #02083e;
+    cursor: pointer;
+}
+
 .hello {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     font-family: 'Harry Beast';
     font-size: 3.5rem;
     color: #ffd700;
@@ -72,16 +91,18 @@ body {
 #menu-lateral nav ul li span.material-symbols-outlined {
     font-size: 3rem;
     color: white;
+    cursor: pointer;
 }
 
 #menu-lateral nav ul li a {
     color: white;
     font-size: 1.5rem;
     text-decoration: none;
+    cursor: pointer;
 }
 
 #menu-lateral nav ul li.atual {
-    background-color: beige;
+    background-color: #1a237e;
     max-width: 100%;
 }
 

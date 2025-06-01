@@ -46,9 +46,13 @@
                         </svg>
                     </span>
                 </div>
-                <button type="button" onclick="validarLogin(event)">Entrar</button>
-    </section>
-    </form>
+                <button type="button" class="btn-login" onclick="validarLogin(event)">Entrar</button>
+        </form>
+    </section>  
+    <div class="pergunta"></div>
+    <hr class="linha-personalizada">
+    <span class="text-pergunta"> Não fez o cadastro?</span>
+    <a class="link-cadastro" href="cadastro.html">Cadastre-se</a>
 
     <footer>
         <p>© 2025 - Todos os feitiços reservados por Gabriel Gomes Pimentel<br>
@@ -113,7 +117,7 @@
                         setTimeout(function () {
 
                             window.location = "./dashboard/dashboardHarryPotter.html";
-                            // ./dashboard/dashboardHarryPotter.html
+
                         }
                             , 1000); // apenas para exibir o loading
 

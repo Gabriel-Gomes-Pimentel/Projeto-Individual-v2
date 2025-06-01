@@ -12,17 +12,6 @@
     box-sizing: border-box;
 }
 
-/* .luz {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    pointer-events: none ;
-    z-index: 1;
-    background: radial-gradient(circle at var(--x) var(--y), transparent 1%, rgba(0, 0, 0, 0.95) 20%);
-} */
-
 body {
 
     font-family: 'Harry Potter', sans-serif;

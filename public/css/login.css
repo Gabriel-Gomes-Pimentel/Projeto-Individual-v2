@@ -109,7 +109,7 @@ input {
     justify-content: center;
 }
 
-button[type="submit"] {
+.btn-login {
     padding: 12px;
     border: none;
     border-radius: 8px;
@@ -120,8 +120,38 @@ button[type="submit"] {
     transition: background-color 0.3s;
 }
 
-button[type="submit"]:hover {
+.btn-loginhover {
     background-color: #e6c200;
+}
+
+.pergunta {
+    margin-top: 20px;
+}
+
+.linha-personalizada {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50%;
+}
+
+.text-pergunta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Harry Beast';
+    font-size: 55px;
+    color: #fff;
+}
+
+.link-cadastro {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    font-family: 'Harry Beast';
+    font-size: 50px;
+    text-decoration: none;
+    color: #ffd700;
 }
 
 footer {
@@ -148,10 +178,10 @@ footer p {
 }
 
 .link-inspiracao {
-     display: flex;
+    display: flex;
     align-items: center;
-     justify-content: space-around;
-     font-size: 12px;
-     text-decoration: none;
-     color:#ffd700;
+    justify-content: space-around;
+    font-size: 12px;
+    text-decoration: none;
+    color: #ffd700;
 }

@@ -37,13 +37,33 @@ body {
     height: auto
 }
 
-.hello {
-    font-family: 'Harry Beast';
-    font-size: 3.5rem;
-    color:#ffd700;
+
+#perfil {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
-#menu-lateral nav{
+svg {
+    height: 100px;
+    width: 100px;
+    background-color: #02083e;
+    cursor: pointer;
+}
+
+.hello {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Harry Beast';
+    font-size: 3.5rem;
+    color: #ffd700;
+}
+
+#menu-lateral nav {
     margin: 0;
     width: 100%;
 }
@@ -59,7 +79,7 @@ body {
     display: flex;
     align-items: center;
     padding: 7% 7%;
-    max-width: 100% ;
+    max-width: 100%;
 }
 
 #menu-lateral nav ul li span.material-symbols-outlined {
@@ -71,11 +91,12 @@ body {
     color: white;
     font-size: 1.5rem;
     text-decoration: none;
+    cursor: pointer;
 }
 
-#menu-lateral nav ul li.atual{
-    background-color: beige;
-    max-width: 100%!important;
+#menu-lateral nav ul li.atual {
+    background-color: #1a237e;
+    max-width: 100%;
 }
 
 #conteudo {

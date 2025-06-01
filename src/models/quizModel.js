@@ -15,13 +15,13 @@ function atualizarAreaMagicaUsuario(idUser, idAreaMagica) {
     return database.executar(instrucaoSql);
 }
 
-// function cadastrar(idUserServer, idCasaServer) {
+// function registrarRespostas(idUserServer, idCasaServer) {
 //     var instrucaoSql = `INSERT INTO resultado (id, id_usuario, fk_idCasa, fk_idAreaMagica) VALUES (default, ${idUserServer}, ${idCasaServer};`;
 //     console.log("Executando a instrução SQL: \n" + instrucaoSql);
 //     return database.executar(instrucaoSql);
 // }
 
-function inseriResultado(idUser, idCasa, idAreaMagica) {
+function inserirResultado(idUser, idCasa, idAreaMagica) {
     var instrucaoSql = `INSERT INTO resultado (id, id_usuario, fk_idCasa, fk_idAreaMagica) VALUES (default, ${idUser}, ${idCasa}, ${idAreaMagica});`;
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
@@ -56,8 +56,8 @@ GROUP BY c.nome, a.nome;`;
 }
 
 module.exports = {
-    // cadastrar,
-    inseriResultado,
+    // registrarRespostas,
+    inserirResultado,
     interesseAreaMagica,
     distribuicaoResultadoPorCasa,
     atualizarCasaUsuario,
