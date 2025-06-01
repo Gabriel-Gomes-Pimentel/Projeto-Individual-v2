@@ -48,7 +48,7 @@
                 </div>
                 <button type="button" class="btn-login" onclick="validarLogin(event)">Entrar</button>
         </form>
-    </section>  
+    </section>
     <div class="pergunta"></div>
     <hr class="linha-personalizada">
     <span class="text-pergunta"> Não fez o cadastro?</span>
@@ -116,8 +116,11 @@
 
                         setTimeout(function () {
 
-                            window.location = "./dashboard/dashboardHarryPotter.html";
-
+                            if (json.idCasa != null) {
+                                window.location = "./perfil.html";
+                            } else {
+                                window.location = "./quiz.html";
+                            }
                         }
                             , 1000); // apenas para exibir o loading
 

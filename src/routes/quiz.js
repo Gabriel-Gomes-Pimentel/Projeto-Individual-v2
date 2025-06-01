@@ -9,14 +9,18 @@ router.post('/registrarRespostas', function (req, res) {
     quizController.registrarRespostas(req, res);
 })
 
-router.get("/distribuicao", function (req, res) {
-    quizController.distribuicao(req, res);
-});
 
 router.put("/finalizarQuiz/:idUsuario", function (req,res) {
     quizController.finalizarQuiz(req,res);
 })
 
+router.get("/distribuicao", function (req, res) {
+    quizController.distribuicao(req, res);
+});
+
+router.get("/interesses", function (req,res) {
+    quizController.interesses(req,res);
+})
 // router.get("/total", function (req, res) {
 //     quizController.totalBruxos(req, res);
 // });

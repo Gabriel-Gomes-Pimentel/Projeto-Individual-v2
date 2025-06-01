@@ -115,7 +115,8 @@ svg {
 
 .graficos {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
+    /* flex-wrap: wrap; */
     justify-content: center;
     gap: 30px;
     margin-top: 32px;

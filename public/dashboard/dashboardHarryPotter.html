@@ -77,8 +77,9 @@
                 </div>
             </div>
             <h2 class="graficoAreaMagica-titulo">Preferências das Áreas Mágicas em cada casa</h2>
-            <div class="grafico-box"></div>
-            <canvas id="grafico-areaMagica" class="grafico-canvas" width="600" height="400"></canvas>
+            <div class="grafico-box">
+                <canvas id="grafico-areaMagica" class="grafico-canvas" width="200" height="200"></canvas>
+            </div>
         </div>
     </main>
 
@@ -182,7 +183,10 @@
         }
 
         function atualizarGrafico() {
-            fetch("/quiz/distribuicao", { cache: 'no-store' })
+            fetch("/quiz/distribuicao", {
+                method: 'GET',
+                cache: 'no-store'
+            })
                 .then(response => response.json())
                 .then(dados => {
                     const total = dados.reduce((acc, item) => acc + item.total_resultado, 0);
@@ -243,108 +247,84 @@
             }, 500)
         }
 
-        window.onload = atualizarGrafico;
-
-
-
         //Segundo gráfico
+        function graficoInteressesAreaMagica() {
+            fetch("/quiz/interesses", {
+                method: 'GET',
+                cache: 'no-store'
+            })
 
-        // let graficoAreaMagica;
+                .then(res => res.json())
+                .then(dados => {
+                    const areas = ["Herbologia", "Magizologia", "Feitiços", "Poções"];
+                    const casas = ["Grifinoria", "Corvinal", "Sonserina", "LufaLufa"];
 
-        //     function agendarAtualizacaoGrafico() {
-        //         if (proximaAtualizacao) {
-        //             clearTimeout(proximaAtualizacao);
-        //         }
+                    const dadosPorCasa = {
+                        Grifinoria: [0, 0, 0, 0],
+                        Corvinal: [0, 0, 0, 0],
+                        Sonserina: [0, 0, 0, 0],
+                        LufaLufa: [0, 0, 0, 0]
+                    };
 
-        //         proximaAtualizacao = setTimeout(() => {
-        //             atualizarGrafico()
-        //         }, 500)
-        //     }
+                    dados.forEach(item => {
+                        const indiceAreaMagicas = areas.indexOf(item.areaMagica);
 
-        //     function atualizarGraficoBarras(porcentagens) {
-        //         const ctx = document.getElementById('grafico-areaMagica').getContext('2d');
+                        if (indiceAreaMagicas >= 0) {
+                            dadosPorCasa[item.casa][indiceAreaMagicas] = item.total_interesse;
+                        }
+                    });
 
-        //         if (graficoCasas) {
-        //             graficoCasas.destroy();
-        //         }
+                    const coresPorCasa = {
+                        Grifinoria: 'rgba(255, 0, 0, 0.7)',
+                        Corvinal: 'rgba(0, 0, 255, 0.7)',
+                        Sonserina: 'rgba(0, 128, 0, 0.7)',
+                        LufaLufa: 'rgba(255, 215, 0, 0.7)'
+                    };
+
+                    const datasets = casas.map(casa => ({
+                        label: casa,
+                        data: dadosPorCasa[casa],
+                        fill: true,
+                        tension: 0.1,
+                        backgroundColor: coresPorCasa[casa]
+                    }));
+
+                    const ctx = document.getElementById('grafico-areaMagica').getContext('2d');
+                    new Chart(ctx, {
+                        type: 'radar',
+                        data: {
+                            labels: areas,
+                            datasets: datasets,
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                title: {
+                                    display: true,
+                                    text: "Preferências das Casas por Áreas Mágicas"
+                                }
+                            },
+                            scales: {
+                                r: {
+                                    suggestedMin: 0,
+                                    
+                                }
+                            }
+                        }
+
+                    });
+
+                })
+                .catch(error => console.error("Erro ao buscar dados:", error));
+        }
+
+        window.onload = function () {
+
+            atualizarGrafico();
+            graficoInteressesAreaMagica();
+        };
 
 
-        //     graficoCasas = new Chart(ctx, {
-        //         type: 'radar',
-        //         data: {
-        //             labels: ['Grifinoria', 'Corvinal', 'LufaLufa', 'Sonserina'],
-        //             datasets: [{
-        //                 label: "Porcentagem(%) de Pessoas por Casa",
-        //                 data: [
-        //                     porcentagens.Grifinoria,
-        //                     porcentagens.Corvinal,
-        //                     porcentagens.LufaLufa,
-        //                     porcentagens.Sonserina
-        //                 ],
-        //                 backgroundColor: ['rgba(255, 0, 0, 0.7)', 'rgba(0, 0, 255, 0.7)', 'rgba(255, 215, 0, 0.7)', 'rgba(0, 128, 0, 0.7)'],
-        //                 borderWidth: 1
-        //             }]
-        //         },
-        //         options: {
-        //             scales: {
-        //                 y: {
-        //                     beginAtZero: true,
-        //                     ticks: {
-        //                         stepSize: 10,
-        //                         max: 100
-        //                     }
-        //                 }
-        //             }
-        //         }
-        //     });
-
-        // }
-
-        // function atualizarGrafico() {
-        //     fetch("/quiz/distribuicao", { cache: 'no-store' })
-        //     .then(response => response.json())
-        //     .then(dados => {
-        //         const total = dados.reduce((acc, item) => acc + item.total_resultado, 0);
-        //         const porcentagens = {
-        //             Grifinoria: 0,
-        //             Corvinal: 0,
-        //             LufaLufa: 0,
-        //             Sonserina: 0
-        //         };
-
-        //         let casaMaisPopular = '';
-        //         let maiorValor = 0;
-
-        //         dados.forEach(item => {
-        //             let nome = item.casa;
-        //             let totalCasa = item.total_resultado;
-        //             let percent = ((item.total_resultado / total) * 100).toFixed(2);
-
-        //             if (nome == "Grifinoria") porcentagens.Grifinoria = percent;
-        //             else if (nome == "Corvinal") porcentagens.Corvinal = percent;
-        //             else if (nome == "LufaLufa") porcentagens.LufaLufa = percent;
-        //             else if (nome == "Sonserina") porcentagens.Sonserina = percent;
-
-        //             if (totalCasa > maiorValor) {
-        //                 maiorValor = totalCasa;
-        //                 casaMaisPopular = nome;
-        //             }
-        //         });
-
-        //         //Atualização da KPI
-        //         document.getElementById('kpi-container').style.display = 'block';
-        //         document.getElementById('kpi-totalBruxos').innerHTML = `Total de bruxos na escola: <strong>${total}</strong>`;
-        //         document.getElementById('kpi-casaPopular').innerHTML = `Casa mais popular: <strong>${casaMaisPopular}</strong>`;
-        //         document.getElementById('kpi-totalCasaPopular').innerHTML = `Quantidade de bruxos na casa mais popular: <strong>${maiorValor}</strong>`;
-
-        //         atualizarGraficoBarras(porcentagens);
-        //     })
-        //     .catch(erro => {
-        //         console.error("Erro ao obter dados do gráfico:", erro);
-        //     });
-        // }
-
-        // window.onload = atualizarGrafico;
     </script>
 </body>
 
