@@ -66,19 +66,25 @@
         </div>
     </header>
     <main id="conteudo">
-        <h2 class="grafico-titulo">Distribuição das Casas</h2>
         <div class="graficos">
             <div class="grafico-box">
-                <canvas id="grafico-casas" class="grafico-canvas" width="600" height="400"></canvas>
+                <h2 class="grafico-titulo">Distribuição das Casas</h2>
+                <canvas id="grafico-casas" class="grafico-canvas" width="200" height="200"></canvas>
                 <div id="kpi-container" style="text-align: center; margin: 30px auto; display: none;">
-                    <p id="kpi-totalBruxos" style="font-size: 18px;"></p>
-                    <p id="kpi-casaPopular" style="font-size: 18px;"></p>
-                    <p id="kpi-totalCasaPopular" style="font-size: 18px;"></p>
+                    <div class="box-kpi1">
+                        <p id="kpi-totalBruxos" style="font-size: 18px;"></p>
+                    </div>
+                    <div class="box-kpi2">
+                        <p id="kpi-casaPopular" style="font-size: 18px;"></p>
+                    </div>
+                    <div class="box-kpi3">
+                        <p id="kpi-totalCasaPopular" style="font-size: 18px;"></p>
+                    </div>
                 </div>
             </div>
-            <h2 class="graficoAreaMagica-titulo">Preferências das Áreas Mágicas em cada casa</h2>
             <div class="grafico-box">
-                <canvas id="grafico-areaMagica" class="grafico-canvas" width="200" height="200"></canvas>
+                <h2 class="graficoAreaMagica-titulo">Distribuição das Preferências das Áreas Mágicas em cada casa</h2>
+                <canvas id="grafico-areaMagica" class="grafico-canvas" width="400" height="400"></canvas>
             </div>
         </div>
     </main>
@@ -256,6 +262,7 @@
 
                 .then(res => res.json())
                 .then(dados => {
+                    //labels
                     const areas = ["Herbologia", "Magizologia", "Feitiços", "Poções"];
                     const casas = ["Grifinoria", "Corvinal", "Sonserina", "LufaLufa"];
 
@@ -266,6 +273,7 @@
                         LufaLufa: [0, 0, 0, 0]
                     };
 
+                    // datas
                     dados.forEach(item => {
                         const indiceAreaMagicas = areas.indexOf(item.areaMagica);
 
@@ -275,10 +283,17 @@
                     });
 
                     const coresPorCasa = {
-                        Grifinoria: 'rgba(255, 0, 0, 0.7)',
-                        Corvinal: 'rgba(0, 0, 255, 0.7)',
-                        Sonserina: 'rgba(0, 128, 0, 0.7)',
-                        LufaLufa: 'rgba(255, 215, 0, 0.7)'
+                        Grifinoria: 'rgba(255, 0, 0, 0.4)',
+                        Corvinal: 'rgba(0, 0, 255, 0.4)',
+                        Sonserina: 'rgba(0, 128, 0, 0.4)',
+                        LufaLufa: 'rgba(255, 215, 0, 0.4)'
+                    };
+
+                    const bordaPorCasa = {
+                        Grifinoria: 'rgb(139, 0, 0)',
+                        Corvinal: 'rgb(0, 0, 139)',
+                        Sonserina: 'rgb(0, 100, 0)',
+                        LufaLufa: 'rgba(128, 128, 0)'
                     };
 
                     const datasets = casas.map(casa => ({
@@ -286,7 +301,9 @@
                         data: dadosPorCasa[casa],
                         fill: true,
                         tension: 0.1,
-                        backgroundColor: coresPorCasa[casa]
+                        backgroundColor: coresPorCasa[casa],
+                        borderColor: bordaPorCasa[casa],
+                        borderDash: [3, 2]
                     }));
 
                     const ctx = document.getElementById('grafico-areaMagica').getContext('2d');
@@ -306,8 +323,9 @@
                             },
                             scales: {
                                 r: {
-                                    suggestedMin: 0,
-                                    
+                                    suggestedMin: true,
+                                    // suggestedMax: 10,
+
                                 }
                             }
                         }

@@ -21,8 +21,5 @@ router.get("/distribuicao", function (req, res) {
 router.get("/interesses", function (req,res) {
     quizController.interesses(req,res);
 })
-// router.get("/total", function (req, res) {
-//     quizController.totalBruxos(req, res);
-// });
 
 module.exports = router;
