@@ -56,12 +56,12 @@ CREATE TABLE usuarios (
 );
 
 /* ============================== TABELA RESULTADO ==========================================================
--- Finalidade: Registra cada vez que um usuário joga o jogo.
--- Cada partida guarda a data/hora e a pontuação obtida.
--- Um usuário pode jogar várias vezes (N:1 com usuarios).
+-- Finalidade: Registra cada vez que um usuário faz o quiz.
+-- Cada quiz guarda a casa selecionada e a área mágica escolhida .
+-- Um usuário pode fazer o quiz uma única vez (N:1).
 =========================================================================================================
 */
-CREATE TABLE RESULTADO (
+CREATE TABLE resultado (
     id INT AUTO_INCREMENT,
     id_usuario INT,
     fk_idCasa INT,
@@ -76,52 +76,35 @@ CREATE TABLE RESULTADO (
 );
 
 
-
 /*======================================QUERIES===========================================================
 1- Porcentagem de usuários por casa
--Kpi: Total de bruxos na escola
 2- Radar: interesses por área mágica de cada casa
-3- Mostrar o ranking das casas, baseado na maior pontuação individual de um jogador de cada casa.
 ==========================================================================================================
 */
 -- 1
 SELECT 
-c.nome AS casa,
- COUNT(r.id) AS total_resultado 
- FROM selecao_casa c 
- LEFT JOIN resultado r ON r.fk_idCasa = c.id 
- GROUP BY c.id;
+ c.nome AS casa, COUNT(r.id) AS total_resultado
+FROM
+ selecao_casa c
+LEFT JOIN
+ resultado r ON r.fk_idCasa = c.id
+GROUP BY c.id;
 
--- KPI 
--- SELECT
--- 	COUNT(*) AS total_bruxos
--- FROM usuarios
--- WHERE id_selecao_casa IS NOT NULL;    
-
--- 2
+-- 2 
 SELECT 
     c.nome AS casa,
     a.nome AS areaMagica,
     COUNT(u.id) AS total_interesse
 FROM usuarios u
-JOIN selecao_casa c ON u.id_selecao_casa = c.id
-JOIN area_magica a ON u.id_area_magica = a.id
+LEFT JOIN selecao_casa c ON u.id_selecao_casa = c.id
+LEFT JOIN area_magica a ON u.id_area_magica = a.id
 GROUP BY c.nome, a.nome;
 
-
--- 3
-SELECT 
-    s.nome AS casa,
-    MAX(p.pontos) AS maior_pontuacao
-FROM partida p
-JOIN usuarios u ON p.id_usuario = u.id
-JOIN selecao_casa s ON u.id_selecao_casa = s.id
-GROUP BY s.id
-ORDER BY maior_pontuacao DESC;
-
-select * FROM usuarios;
-
+-- Consulta para listar usuários com suas casas
   SELECT u.id, u.nome, u.email, u.id_selecao_casa,sa.nome as nomeCasa
         FROM usuarios as u
 			left JOIN selecao_casa as sa
         ON sa.id = u.id_selecao_casa;
+        
+        -- Consulta simples para listar as casas dos usuários
+        select id_selecao_casa from usuarios;

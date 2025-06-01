@@ -62,7 +62,46 @@
         </div>
     </header>
 
-    <main class="conteudo"></main>
+    <main class="conteudo">
+        <div class="perfil-casa">
+            <div class="coluna-esquerda">
+                <div class="brasao">
+                    <img src="./assets/icon/Mearim.png" alt="Mearim">
+                </div>
+            </div>
+            <div class="coluna-direita">
+                <h1 class="titulo-casa">Mearim</h1>
+                <div class="origem">
+                    Origem da palavra Mearim
+                    Vindo da língua tupi, o nome Mearim pode vir de:
+                    “Myarim” ou “Mbyarym”
+                    "M'ya" ou "Mboya" mover-se, agitar (referente à água)
+                    "rim" = sufixo intensificador ou diminutivo
+                    Assim, "Mearim" pode ser interpretado como:
+                    “Rio das águas agitadas” ou “Rio de correntezas”
+                </div>
+
+                <div class="lenda">
+                    <strong>Lenda da Sereia Yara</strong><br>
+                    conhecida como Lenda da Mãe da água, faz parte do folclore brasileiro. Trata-se de uma lenda
+                    folclórica
+                    de
+                    origem indígena, oriunda da região amazônica. Apesar de ser originária dessa região, a Lenda da Iara
+                    é
+                    conhecida em todo Brasil.
+                </div>
+            </div>
+        </div>
+
+        <div class="descricao-casa">
+            <span class="personalidade">
+                As pessoas da casa Mearim são filhos do rio, possuem o espirito da água. Boa parte das vezes são bem
+                agitados mas sabem aproveitar da boa calmaria, sendo turbulentos e calmos como o rio e sensatos ao nadar
+                pelas correntezas.
+
+            </span>
+        </div>
+    </main>
 </body>
 
 <script>
@@ -89,29 +128,92 @@
     }
 
     function verificarCasa() {
-        fetch("/dash/verificarCasa", { cache: 'no-store' })
-            .then(response => response.json())
-            .then(dados => {
 
+        const casas = {
+            1: {
+                nome: "Tata- Porã",
+                cor: "#580b03",
+                imagem: "./assets/icon/Tata-Pora.png",
+                origem: `Origem do nome Tata - Porã
 
-                console.log(idCasa)
-                dados.forEach(item => {
-                    let id = item.id_selecao_casa;
-                    var backgroundCasa = document.querySelector(".conteudo")
+ O nome Tata significa fogo
 
-                    if (id == 1) {
-                        backgroundCasa.style.backgroundColor = "red";
-                    } else if (id == 2) {
-                        backgroundCasa.style.backgroundColor = "red";
-                    } else if (id == 2) {
-                        backgroundCasa.style.backgroundColor = "";
-                    } else if (id == 2) {
-                        backgroundCasa.style.backgroundColor = "red";
-                    }
-                });
-            })
-            .catch(erro => {
-                console.error("Erro ao obter dados do perfil:", erro);
-            });
+Tata-Porã fazem referencia a um fogo bonito / sagrado`,
+                lenda: `A lenda da Mula sem Cabeça
+
+A mula sem cabeça é uma das lendas mais conhecidas do folclore brasileiro . A lenda se faz presente em diversos países da América Latina.
+A mula sem cabeça é descrita como um animal fantástico que não tem cabeça e, às vezes, tem chamas saindo do seu corpo.
+`,
+                personalidade: `As pessoas da casa Tata-Porã são ardentes, únicos e sinceros, as vezes são “sem cabeça” e agem por impulso, porém são corajosos e ágeis e fortes. `,
+            },
+            2: {
+                nome: `Mearim`,
+
+                cor: `#07406b`,
+
+                imagem: `./assets/icon/Mearim.png`,
+
+                origem: `Origem da palavra Mearim
+                    Vindo da língua tupi, o nome Mearim pode vir de:
+                    “Myarim” ou “Mbyarym”
+                    "M'ya" ou "Mboya" mover-se, agitar (referente à água)
+                    "rim" = sufixo intensificador ou diminutivo
+                    Assim, "Mearim" pode ser interpretado como:
+                    “Rio das águas agitadas” ou “Rio de correntezas”`,
+
+                lenda: `  <strong>Lenda da Sereia Yara</strong><br>
+                    conhecida como Lenda da Mãe da água, faz parte do folclore brasileiro. Trata-se de uma lenda
+                    folclórica
+                    de
+                    origem indígena, oriunda da região amazônica. Apesar de ser originária dessa região, a Lenda da Iara
+                    é
+                    conhecida em todo Brasil.`,
+
+                personalidade: ` As pessoas da casa Mearim são filhos do rio, possuem o espirito da água. Boa parte das vezes são bem
+                agitados mas sabem aproveitar da boa calmaria, sendo turbulentos e calmos como o rio e sensatos ao nadar
+                pelas correntezas.`,
+            },
+            // 3: {
+            //     nome:
+            //         cor:
+            //     imagem:
+            //         origem:
+            //     lenda:
+            //         personalidade:
+            // },
+            4: {
+                nome: `Rudá`,
+
+                cor: `#da6e7c`,
+
+                imagem: `./assets/icon/Ruda.png`,
+
+                origem: `Origem do nome Rudá
+
+ O nome Rudá é considerada um nome próprio mitológico, portanto sua origem pode não seguir uma decomposição literal clara como outras palavras tupis. Na mitologia Tupi-Guarani, Rudá é o deus do amor 
+`,
+                lenda: `A lenda do Boto Cor de Rosa
+
+A lenda é uma famosa história do folclore brasileiro, originada na região amazônica. Segundo a lenda, o boto se transforma em um homem bonito e sedutor durante as noites de lua cheia, indo a festas nas comunidades ribeirinhas.`,
+
+                personalidade: `As pessoas da casa Rudá são amorosos, com forte presença do coração humano, e valorizam a união. São grandes parceiros, atraentes e seduzentes.`,
+            }
+        };
+
+        const casa = casas[idCasa];
+
+        var backgroundCasa = document.querySelector(".conteudo").style.backgroundColor = casa.cor;
+
+        document.querySelector(".brasao img").src = casa.imagem;
+
+        document.querySelector(".titulo-casa").innerHTML = casa.nome;
+
+        document.querySelector(".origem").innerHTML = casa.origem
+
+        document.querySelector(".lenda").innerHTML = casa.lenda;
+
+        document.querySelector(".personalidade").innerHTML = casa.personalidade;
     }
+
+    window.onload = verificarCasa;
 </script>
