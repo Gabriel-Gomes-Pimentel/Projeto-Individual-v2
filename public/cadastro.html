@@ -60,7 +60,7 @@
                     <span id="span_tamanho">Pelo menos 8 caracteres</span>
                 </div>
             </div>
-            <button type="submit" onclick="abrirModal()">Registrar-se</button><br><br>
+            <button type="submit" onclick="validarCadastro()">Registrar-se</button><br><br>
             <hr class="linha-personalizada">
             <span class="text-pergunta"> Já fez o cadastro?</span>
             <a class="link-login" href="login.html">Entrar</a>
@@ -263,21 +263,6 @@
                 iconeOlhoAberto.style.display = 'none';
                 iconeOlhoFechado.style.display = 'inline';
             }
-        }
-
-        function fecharModal() {
-            modal_container.innerHTML = `
-        <div class="modal-container">
-      <div class="modal-overlay" onclick="fecharModal()"></div>
-    <div class="modal">
-        <h1>Resultados</h1>
-        <p id="p_resultado"></p>
-        <div class="boxButton">
-            <button class="btnCalcular " onclick="fecharModal()">Fechar</button>
-        </div>
-    </div>
-</div>
-    `
         }
         
     </script>
