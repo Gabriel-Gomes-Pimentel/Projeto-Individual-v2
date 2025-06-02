@@ -55,39 +55,43 @@ CREATE TABLE usuarios (
         REFERENCES area_magica (id)
 );
 
-/* ============================== TABELA RESULTADO ==========================================================
--- Finalidade: Registra cada vez que um usuário faz o quiz.
--- Cada quiz guarda a casa selecionada e a área mágica escolhida .
--- Um usuário pode fazer o quiz uma única vez (N:1).
-=========================================================================================================
-*/
-CREATE TABLE resultado (
-    id INT AUTO_INCREMENT,
-    id_usuario INT,
-    fk_idCasa INT,
-    fk_idAreaMagica INT,
-    CONSTRAINT pkCompostaUsuario PRIMARY KEY (id, id_usuario),
-    CONSTRAINT fkResultadoUsuario FOREIGN KEY (id_usuario)
-        REFERENCES usuarios (id),
-	CONSTRAINT fkResultadoCasa FOREIGN KEY (fk_idCasa)
-		REFERENCES selecao_casa(id),
-        CONSTRAINT fkResultadoAreaMagica FOREIGN KEY (fk_idAreaMagica)
-		REFERENCES area_magica(id)
+/* ============================== MATERIA_MAGICA ============================== */
+CREATE TABLE materia_magica (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(45) NOT NULL
 );
 
+INSERT INTO materia_magica (nome) VALUES
+('Poções'),
+('Feitiços'),
+('Transfiguração'),
+('Defesa Contra as Artes das Trevas'),
+('Astronomia');
+
+/* ============================== TABELA N:N USUARIO_MATERIA ============================== 
+Um usuário pode estudar várias matérias.
+Uma matéria pode ser estudada por vários usuários.
+*/
+CREATE TABLE usuario_materia (
+    id_usuario INT,
+    id_materia INT,
+    PRIMARY KEY (id_usuario, id_materia),
+    FOREIGN KEY (id_usuario) REFERENCES usuarios(id),
+    FOREIGN KEY (id_materia) REFERENCES materia_magica(id)
+);
 
 /*======================================QUERIES===========================================================
 1- Porcentagem de usuários por casa
 2- Radar: interesses por área mágica de cada casa
+3-listar usuários com matérias que estudam
 ==========================================================================================================
 */
 -- 1
 SELECT 
- c.nome AS casa, COUNT(r.id) AS total_resultado
-FROM
- selecao_casa c
-LEFT JOIN
- resultado r ON r.fk_idCasa = c.id
+    c.nome AS casa,
+    COUNT(u.id) AS total_usuarios
+FROM selecao_casa c
+LEFT JOIN usuarios u ON u.id_selecao_casa = c.id
 GROUP BY c.id;
 
 -- 2 
@@ -100,6 +104,15 @@ LEFT JOIN selecao_casa c ON u.id_selecao_casa = c.id
 LEFT JOIN area_magica a ON u.id_area_magica = a.id
 GROUP BY c.nome, a.nome;
 
+-- 3
+SELECT 
+    u.nome AS usuario,
+    m.nome AS materia
+FROM usuario_materia um
+JOIN usuarios u ON um.id_usuario = u.id
+JOIN materia_magica m ON um.id_materia = m.id
+ORDER BY u.nome;
+
 -- Consulta para listar usuários com suas casas
   SELECT u.id, u.nome, u.email, u.id_selecao_casa,sa.nome as nomeCasa
         FROM usuarios as u
@@ -108,3 +121,6 @@ GROUP BY c.nome, a.nome;
         
         -- Consulta simples para listar as casas dos usuários
         select id_selecao_casa from usuarios;
+        
+       
+      

@@ -25,10 +25,6 @@ function registrarRespostas(req, res) {
         quizModel.atualizarAreaMagicaUsuario(idUserServer, idAreaMagicaServer),
         quizModel.atualizarCasaUsuario(idUserServer, idCasaServer)
     ])
-        .then(() => {
-
-            return quizModel.inserirResultado(idUserServer, idCasaServer, idAreaMagicaServer);
-        })
         .then(function (resposta) {
             res.status(201).json({
                 mensagem: "Resposta enviada ao banco de dados com sucesso!",
@@ -57,10 +53,6 @@ function finalizarQuiz(req, res) {
             .then(() => {
 
                 return quizModel.atualizarAreaMagicaUsuario(idUserServer, idAreaMagicaServer);
-            })
-            .then(() => {
-
-                return quizModel.inserirResultado(idUserServer, idCasaServer, idAreaMagicaServer);
             })
             .then(() => {
                 res.status(200).json({ mensagem: "Quiz finalizado com sucesso!" });
