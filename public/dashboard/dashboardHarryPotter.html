@@ -55,7 +55,7 @@
                         </span>
                         <a href="../dashboard/dashboardHarryPotter.html">Dashboard</a>
                     </li>
-                    <li  id="materias">
+                    <li id="materias">
                         <span class="material-symbols-outlined">
                             menu_book
                         </span>
@@ -166,16 +166,16 @@
             graficoCasas = new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: ['Grifinoria', 'Corvinal', 'LufaLufa', 'Sonserina'],
+                    labels: ['TataPora', 'Mearim', 'Ruda', 'Eçauna'],
                     datasets: [{
                         label: "Porcentagem(%) de Pessoas por Casa",
                         data: [
-                            porcentagens.Grifinoria,
-                            porcentagens.Corvinal,
-                            porcentagens.LufaLufa,
-                            porcentagens.Sonserina
+                            porcentagens.TataPora,
+                            porcentagens.Mearim,
+                            porcentagens.Ruda,
+                            porcentagens.Eçauna
                         ],
-                        backgroundColor: ['rgba(255, 0, 0, 0.7)', 'rgba(0, 0, 255, 0.7)', 'rgba(255, 215, 0, 0.7)', 'rgba(0, 128, 0, 0.7)'],
+                        backgroundColor: ['rgba(255, 0, 0, 0.7)', 'rgba(0, 0, 255, 0.7)', 'rgba(255, 105, 180, 0.7)', 'rgba(0, 128, 0, 0.7)'],
                         borderWidth: 1
                     }]
                 },
@@ -203,10 +203,10 @@
                 .then(dados => {
                     const total = dados.reduce((acc, item) => acc + item.total_usuarios, 0);
                     const porcentagens = {
-                        Grifinoria: 0,
-                        Corvinal: 0,
-                        LufaLufa: 0,
-                        Sonserina: 0
+                        TataPora: 0,
+                        Mearim: 0,
+                        Ruda: 0,
+                        Eçauna: 0
                     };
 
                     let casaMaisPopular = '';
@@ -217,10 +217,10 @@
                         let totalCasa = item.total_usuarios;
                         let percent = ((item.total_usuarios / total) * 100).toFixed(2);
 
-                        if (nome == "Grifinoria") porcentagens.Grifinoria = percent;
-                        else if (nome == "Corvinal") porcentagens.Corvinal = percent;
-                        else if (nome == "LufaLufa") porcentagens.LufaLufa = percent;
-                        else if (nome == "Sonserina") porcentagens.Sonserina = percent;
+                        if (nome == "TataPora") porcentagens.TataPora = percent;
+                        else if (nome == "Mearim") porcentagens.Mearim = percent;
+                        else if (nome == "Ruda") porcentagens.Ruda = percent;
+                        else if (nome == "Eçauna") porcentagens.Eçauna = percent;
 
                         if (totalCasa > maiorValor) {
                             maiorValor = totalCasa;
@@ -268,39 +268,56 @@
 
                 .then(res => res.json())
                 .then(dados => {
+                    console.log(dados);
                     //labels
                     const areas = ["Herbologia", "Magizologia", "Feitiços", "Poções"];
-                    const casas = ["Grifinoria", "Corvinal", "Sonserina", "LufaLufa"];
+                    const casas = ["TataPora", "Mearim", "Eçauna", "Ruda"];
 
                     const dadosPorCasa = {
-                        Grifinoria: [0, 0, 0, 0],
-                        Corvinal: [0, 0, 0, 0],
-                        Sonserina: [0, 0, 0, 0],
-                        LufaLufa: [0, 0, 0, 0]
+                        TataPora: [0, 0, 0, 0],
+                        Mearim: [0, 0, 0, 0],
+                        Eçauna: [0, 0, 0, 0],
+                        Ruda: [0, 0, 0, 0]
                     };
+
+                    const mapaCasas = {
+                        'Grifinoria': 'TataPora',
+                        'Corvinal': 'Mearim',
+                        'Sonserina': 'Eçauna',
+                        'LufaLufa': 'Ruda',
+                        'TataPora': 'TataPora',
+                        'Mearim': 'Mearim',
+                        'Eçauna': 'Eçauna',
+                        'Ruda': 'Ruda'
+                    };
+
+
+
 
                     // datas
                     dados.forEach(item => {
                         const indiceAreaMagicas = areas.indexOf(item.areaMagica);
 
-                        if (indiceAreaMagicas >= 0) {
-                            dadosPorCasa[item.casa][indiceAreaMagicas] = item.total_interesse;
+                        const casaConvertida = mapaCasas[item.casa];
+                        if (indiceAreaMagicas >= 0 && casaConvertida && dadosPorCasa[casaConvertida]) {
+                            dadosPorCasa[casaConvertida][indiceAreaMagicas] = item.total_interesse;
                         }
                     });
 
                     const coresPorCasa = {
-                        Grifinoria: 'rgba(255, 0, 0, 0.4)',
-                        Corvinal: 'rgba(0, 0, 255, 0.4)',
-                        Sonserina: 'rgba(0, 128, 0, 0.4)',
-                        LufaLufa: 'rgba(255, 215, 0, 0.4)'
+                        TataPora: 'rgba(255, 0, 0, 0.4)',
+                        Mearim: 'rgba(0, 0, 255, 0.4)',
+                        Eçauna: 'rgba(0, 128, 0, 0.4)',
+                        Ruda: 'rgba(255, 105, 180, 0.4)'
                     };
 
                     const bordaPorCasa = {
-                        Grifinoria: 'rgb(139, 0, 0)',
-                        Corvinal: 'rgb(0, 0, 139)',
-                        Sonserina: 'rgb(0, 100, 0)',
-                        LufaLufa: 'rgba(128, 128, 0)'
+                        TataPora: 'rgb(139, 0, 0)',
+                        Mearim: 'rgb(0, 0, 139)',
+                        Eçauna: 'rgb(0, 100, 0)',
+                        Ruda: 'rgba(255, 105, 180, 1)'
                     };
+
 
                     const datasets = casas.map(casa => ({
                         label: casa,

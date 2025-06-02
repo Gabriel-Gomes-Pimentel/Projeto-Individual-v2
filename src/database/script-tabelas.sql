@@ -19,6 +19,11 @@ INSERT INTO selecao_casa (id, nome) VALUES
 (3,'Sonserina'), 
 (4,'LufaLufa');
 
+UPDATE selecao_casa SET nome = 'TataPora' WHERE id = 1;
+UPDATE selecao_casa SET nome = 'Mearim ' WHERE id = 2;
+UPDATE selecao_casa SET nome = 'Eçauna' WHERE id = 3;
+UPDATE selecao_casa SET nome = 'Ruda' WHERE id = 4;
+
 /* ============================== TABELA AREA_MAGICA =====================================================
 -- Finalidade: Armazena diferentes áreas do conhecimento mágico (Poções, Herbologia, Magizologia e Feitiços).
 -- Exemplo de uso: Cada usuário seleciona a área da magia com que mais se identifica.
