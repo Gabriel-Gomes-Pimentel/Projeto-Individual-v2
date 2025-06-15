@@ -108,7 +108,7 @@ input::placeholder {
     width: 24px;
     height: 24px;
     cursor: pointer;
-    
+
 
     display: flex;
     align-items: center;
@@ -153,14 +153,14 @@ button[type="submit"]:hover {
     color: #fff;
 }
 
- .link-login {
+.link-login {
     display: flex;
     align-items: center;
-     justify-content: space-around;
-     font-family: 'Harry Beast';
-     font-size: 50px;
-     text-decoration: none;
-     color:#ffd700;
+    justify-content: space-around;
+    font-family: 'Harry Beast';
+    font-size: 50px;
+    text-decoration: none;
+    color: #ffd700;
 }
 
 footer {
@@ -187,10 +187,10 @@ footer p {
 }
 
 .link-inspiracao {
-     display: flex;
+    display: flex;
     align-items: center;
-     justify-content: space-around;
-     font-size: 12px;
-     text-decoration: none;
-     color:#ffd700;
+    justify-content: space-around;
+    font-size: 12px;
+    text-decoration: none;
+    color: #ffd700;
 }

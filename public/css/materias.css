@@ -10,7 +10,7 @@ body {
     font-family: 'Harry Potter', sans-serif;
     height: 100vh;
     margin: 0;
-    margin-left: 0 !important;
+    margin-left: 0;
 }
 
 #menu-lateral {
@@ -108,7 +108,7 @@ body {
 }
 
 .aula img {
-    position:absolute;
+    position: absolute;
     top: 0;
     left: 0;
     display: flex;
@@ -119,13 +119,14 @@ body {
     z-index: 0;
 }
 
-.aula, .titulo-aula {
+.aula,
+.titulo-aula {
     font-family: "Harry Beast";
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
-    color:white;
+    color: white;
     font-size: 80px;
     z-index: 1;
 }
@@ -145,7 +146,7 @@ body {
 }
 
 .button-aula {
-      color: #fff;
+    color: #fff;
     text-decoration: none;
     padding: 5px 5px;
     border-radius: 15px;
